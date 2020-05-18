@@ -2,10 +2,10 @@ package br.faj.projeto.grupo4.DonationAPI;
 
 public abstract class Donator {
     long id;
-    String email;
-    String password;
+    String email = "teste";
+    String password = "1234";
     String bio;
-    Address address = new Address();
+    Address address;
 
     public Donator(long id, String email, String password, String bio, Address address) {
         this.id = id;

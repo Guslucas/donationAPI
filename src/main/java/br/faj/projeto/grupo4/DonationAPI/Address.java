@@ -1,5 +1,8 @@
 package br.faj.projeto.grupo4.DonationAPI;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Repository;
+
 public class Address {
 
     String street;
@@ -19,36 +22,33 @@ public class Address {
         this.cep = cep;
         this.state = state;
     }
-
-    public Address() {
+    public Address(){
 
     }
 
     public String getStreet() {
         return street;
     }
-
     public String getNumber() {
         return number;
     }
-
     public String getComplement() {
         return complement;
     }
-
     public String getNeighborhood() {
         return neighborhood;
     }
-
     public String getCity() {
         return city;
     }
-
     public String getCep() {
         return cep;
     }
-
     public String getState() {
         return state;
+    }
+
+    public void getAddress(){
+
     }
 }

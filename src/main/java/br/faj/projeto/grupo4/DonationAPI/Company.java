@@ -1,13 +1,15 @@
 package br.faj.projeto.grupo4.DonationAPI;
 
+import java.util.Date;
+
 public class Company extends Donator {
 
     String cnpj;
     String tradingName;
     String companyName;
-    String foundationDate;
+    Date foundationDate;
 
-    public Company(long id, String email, String password, String bio, Address address, String cnpj, String tradingName, String companyName, String foundationDate) {
+    public Company(long id, String email, String password, String bio, Address address, String cnpj, String tradingName, String companyName, Date foundationDate) {
         super(id, email, password, bio, address);
         this.cnpj = cnpj;
         this.tradingName = tradingName;
@@ -27,7 +29,7 @@ public class Company extends Donator {
         return companyName;
     }
 
-    public String getFoundationDate() {
+    public Date getFoundationDate() {
         return foundationDate;
     }
 }

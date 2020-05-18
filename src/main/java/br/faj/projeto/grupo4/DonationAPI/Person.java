@@ -1,13 +1,15 @@
 package br.faj.projeto.grupo4.DonationAPI;
 
+import java.util.Date;
+
 public class Person extends Donator {
 
     String cpf;
     String name;
     String surname;
-    String birthDate;
+    Date birthDate;
 
-    public Person(long id, String email, String password, String bio, Address address, String cpf, String name, String surname, String birthDate) {
+    public Person(long id, String email, String password, String bio, Address address, String cpf, String name, String surname, Date birthDate) {
         super(id, email, password, bio, address);
         this.cpf = cpf;
         this.name = name;
@@ -27,7 +29,7 @@ public class Person extends Donator {
         return surname;
     }
 
-    public String getBirthDate() {
+    public Date getBirthDate() {
         return birthDate;
     }
 }
