@@ -6,13 +6,15 @@ public abstract class Campaign {
     long id;
     String name;
     String description;
-    Date startDate;
-    Date endDate;
+    String type;
+    java.sql.Date startDate;
+    java.sql.Date endDate;
 
-    public Campaign(long id, String name, String description, Date startDate, Date endDate) {
+    public Campaign(long id, String name, String description, String type, java.sql.Date startDate, java.sql.Date endDate) {
         this.id = id;
         this.name = name;
         this.description = description;
+        this.type = type;
         this.startDate = startDate;
         this.endDate = endDate;
     }
@@ -35,5 +37,9 @@ public abstract class Campaign {
 
     public Date getEndDate() {
         return endDate;
+    }
+
+    public String getType() {
+        return type;
     }
 }

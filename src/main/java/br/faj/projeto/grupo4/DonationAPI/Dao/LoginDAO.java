@@ -49,13 +49,13 @@ public class LoginDAO {
                     String name = rs.getString("NAME");
                     String surname = rs.getString("SURNAME");
                     Date birthDate = rs.getDate("BIRTHDATE");
-                    donatorLogin = new Person(id, email, password, bio, (ArrayList<Address>), cpf, name, surname, birthDate);
+                   //donatorLogin = new Person(id, email, password, bio, , cpf, name, surname, birthDate);
                 } else if (donatorType.equals("C")){
                     String cnpj = rs.getString("CNPJ");
                     String tradingName = rs.getString("TRADINGNAME");
                     String companyName = rs.getString("COMPANYNAME");
                     Date foundationDate = rs.getDate("FOUNDATIONDATE");
-                    donatorLogin = new Company(id, email, password, bio, (ArrayList<Address>), cnpj, tradingName, companyName, foundationDate);
+                    //donatorLogin = new Company(id, email, password, bio, , cnpj, tradingName, companyName, foundationDate);
                 }
             }
 
