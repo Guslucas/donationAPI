@@ -2,6 +2,7 @@ package br.faj.projeto.grupo4.DonationAPI.Controllers;
 
 import br.faj.projeto.grupo4.DonationAPI.Dao.LoginDAO;
 import br.faj.projeto.grupo4.DonationAPI.Donator;
+import br.faj.projeto.grupo4.DonationAPI.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -14,7 +15,12 @@ public class LoginController {
     LoginDAO dao;
 
     @PostMapping("/login")
-    public Donator login(@RequestBody Donator d){
-        return dao.login(d);
+    public Response login(@RequestBody Donator d){
+        try{
+            return new Response (dao.login(d));
+        } catch (Exception ex){
+            return new Response(ex.getMessage());
+        }
+
     }
 }

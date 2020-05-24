@@ -22,7 +22,9 @@ public class LoginDAO {
     @Autowired
     private JdbcTemplate jdbcTemplate;
 
-    public Donator login (Donator donator){
+    public Donator login (Donator donator) throws Exception {
+        checkLogin (donator, true);
+
         String query = "SELECT * FROM Donator "
                 + "WHERE Email = '" + donator.getEmail() + "' and Password = '" + donator.getPassword() + "'";
 
@@ -62,5 +64,14 @@ public class LoginDAO {
             e.printStackTrace();
         }
         return null;
+    }
+
+    private void checkLogin(Donator donator, boolean login) throws Exception{
+        if(donator.getEmail() == null || donator.getEmail().trim().isEmpty()){
+            throw new Exception("Email não inserido.");
+        }
+        if(donator.getPassword() == null || donator.getPassword().trim().isEmpty()){
+            throw new Exception("Senha não inserida");
+        }
     }
 }
