@@ -9,8 +9,8 @@ public class Person extends Donator {
     String surname;
     Date birthDate;
 
-    public Person(long id, String email, String password, String bio, Address address, String type, String addressFicticio, String cpf, String name, String surname, Date birthDate) {
-        super(id, email, password, bio, address, type, addressFicticio);
+    public Person(long id, String email, String password, String bio, Address address, String type, String cpf, String name, String surname, Date birthDate) {
+        super(id, email, password, bio, address, type);
         this.cpf = cpf;
         this.name = name;
         this.surname = surname;

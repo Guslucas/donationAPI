@@ -23,15 +23,14 @@ public class LoginDAO {
     private JdbcTemplate jdbcTemplate;
 
     public Donator login (Donator donator){
-        String query = "SELECT * FROM Donator JOIN address a ON d.ID_ADDRESS = a.ID_ADDRESS"
+        String query = "SELECT * FROM Donator "
                 + "WHERE Email = '" + donator.getEmail() + "' and Password = '" + donator.getPassword() + "'";
-        Donator donatorLogin = null;
 
         try (Connection connection = jdbcTemplate.getDataSource().getConnection()){
             Statement stmt = connection.createStatement();
             ResultSet rs = stmt.executeQuery(query);
             while (rs.next()){
-                long id = rs.getLong("ID");
+                long id = rs.getLong("ID_DONATOR");
                 String email = rs.getString("EMAIL");
                 String password = rs.getString("PASSWORD");
                 String bio = rs.getString("BIO");
@@ -42,26 +41,26 @@ public class LoginDAO {
                 String city = rs.getString("CITY");
                 String cep = rs.getString("CEP");
                 String state = rs.getString("STATE");
-
                 String donatorType = rs.getString("TYPE");
+
                 if (donatorType.equals("P")){
                     String cpf = rs.getString("CPF");
                     String name = rs.getString("NAME");
                     String surname = rs.getString("SURNAME");
-                    Date birthDate = rs.getDate("BIRTHDATE");
-                   //donatorLogin = new Person(id, email, password, bio, , cpf, name, surname, birthDate);
-                } else if (donatorType.equals("C")){
+                    Date birthDate = rs.getDate("BIRTH_DATE");
+                    return new Person(id, email, password, bio, new Address(street, number, complement, neighborhood, city, cep, state), donatorType, cpf, name, surname, birthDate);
+                }
+                else if (donatorType.equals("C")){
                     String cnpj = rs.getString("CNPJ");
-                    String tradingName = rs.getString("TRADINGNAME");
-                    String companyName = rs.getString("COMPANYNAME");
-                    Date foundationDate = rs.getDate("FOUNDATIONDATE");
-                    //donatorLogin = new Company(id, email, password, bio, , cnpj, tradingName, companyName, foundationDate);
+                    String tradingName = rs.getString("TRADING_NAME");
+                    String companyName = rs.getString("COMPANY_NAME");
+                    Date foundationDate = rs.getDate("FOUNDATION_DATE");
+                    return new Company(id, email, password, bio, new Address(street, number, complement, neighborhood, city, cep, state), donatorType, cnpj, tradingName, companyName, foundationDate);
                 }
             }
-
         } catch (SQLException e){
             e.printStackTrace();
         }
-        return donatorLogin;
+        return null;
     }
 }

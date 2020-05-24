@@ -15,7 +15,6 @@ public class LoginController {
 
     @PostMapping("/login")
     public Donator login(@RequestBody Donator d){
-        dao.login(d);
-        return d;
+        return dao.login(d);
     }
 }

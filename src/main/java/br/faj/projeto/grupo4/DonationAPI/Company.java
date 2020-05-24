@@ -9,8 +9,8 @@ public class Company extends Donator {
     String companyName;
     Date foundationDate;
 
-    public Company(long id, String email, String password, String bio, Address address, String type, String addressFicticio, String cnpj, String tradingName, String companyName, Date foundationDate) {
-        super(id, email, password, bio, address, type, addressFicticio);
+    public Company(long id, String email, String password, String bio, Address address, String type, String cnpj, String tradingName, String companyName, Date foundationDate) {
+        super(id, email, password, bio, address, type);
         this.cnpj = cnpj;
         this.tradingName = tradingName;
         this.companyName = companyName;
