@@ -1,23 +1,33 @@
 package br.faj.projeto.grupo4.DonationAPI;
 
+import com.fasterxml.jackson.annotation.JsonSubTypes;
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
+
 import java.util.ArrayList;
 import java.util.List;
 
-public class Donator {
+//@JsonTypeInfo(
+//        use = JsonTypeInfo.Id.NAME,
+//        include = JsonTypeInfo.As.PROPERTY,
+//        property = "Type")
+//@JsonSubTypes({
+//        @JsonSubTypes.Type(value = Person.class, name = "person"),
+//        @JsonSubTypes.Type(value = Company.class, name = "company")
+//})
+
+public abstract class Donator {
     long id;
     String email;
     String password;
     String bio;
     Address address;
-    String type;
 
-    public Donator(long id, String email, String password, String bio, Address address, String type) {
+    public Donator(long id, String email, String password, String bio, Address address) {
         this.id = id;
         this.email = email;
         this.password = password;
         this.bio = bio;
         this.address = address;
-        this.type = type;
     }
 
     public long getId() {
@@ -35,8 +45,9 @@ public class Donator {
     public Address getAddress() {
         return address;
     }
-    public String getType() {
-        return type;
+
+    public void setId(long id) {
+        this.id = id;
     }
 
     public List<Address> generateAddress(){
@@ -53,5 +64,16 @@ public class Donator {
         Address address1 =  new Address(street, number, complement, neighborhood, city, cep, state);
         addressList.add(address1);
         return addressList;
+    }
+
+    @Override
+    public String toString() {
+        return "Donator{" +
+                "id=" + id +
+                ", email='" + email + '\'' +
+                ", password='" + password + '\'' +
+                ", bio='" + bio + '\'' +
+                ", address=" + address +
+                '}';
     }
 }

@@ -28,42 +28,41 @@ public class LoginDAO {
         String query = "SELECT * FROM Donator "
                 + "WHERE Email = '" + donator.getEmail() + "' and Password = '" + donator.getPassword() + "'";
 
-        try (Connection connection = jdbcTemplate.getDataSource().getConnection()){
+        try (Connection connection = jdbcTemplate.getDataSource().getConnection();
             Statement stmt = connection.createStatement();
-            ResultSet rs = stmt.executeQuery(query);
-            while (rs.next()){
-                long id = rs.getLong("ID_DONATOR");
-                String email = rs.getString("EMAIL");
-                String password = rs.getString("PASSWORD");
-                String bio = rs.getString("BIO");
-                String street = rs.getString("STREET");
-                String number = rs.getString("NUMBER");
-                String complement = rs.getString("COMPLEMENT");
-                String neighborhood = rs.getString("NEIGHBORHOOD");
-                String city = rs.getString("CITY");
-                String cep = rs.getString("CEP");
-                String state = rs.getString("STATE");
-                String donatorType = rs.getString("TYPE");
+            ResultSet rs = stmt.executeQuery(query)){
 
-                if (donatorType.equals("P")){
-                    String cpf = rs.getString("CPF");
-                    String name = rs.getString("NAME");
-                    String surname = rs.getString("SURNAME");
-                    Date birthDate = rs.getDate("BIRTH_DATE");
-                    return new Person(id, email, password, bio, new Address(street, number, complement, neighborhood, city, cep, state), donatorType, cpf, name, surname, birthDate);
+                while (rs.next()){
+                    long id = rs.getLong("ID_DONATOR");
+                    String email = rs.getString("EMAIL");
+                    String password = rs.getString("PASSWORD");
+                    String bio = rs.getString("BIO");
+                    String street = rs.getString("STREET");
+                    String number = rs.getString("NUMBER");
+                    String complement = rs.getString("COMPLEMENT");
+                    String neighborhood = rs.getString("NEIGHBORHOOD");
+                    String city = rs.getString("CITY");
+                    String cep = rs.getString("CEP");
+                    String state = rs.getString("STATE");
+                    String donatorType = rs.getString("TYPE");
+
+                    if (donatorType.equals("P")){
+                        String cpf = rs.getString("CPF");
+                        String name = rs.getString("NAME");
+                        String surname = rs.getString("SURNAME");
+                        Date birthDate = rs.getDate("BIRTH_DATE");
+                        return new Person(id, email, password, bio, new Address(street, number, complement, neighborhood, city, cep, state), cpf, name, surname, birthDate);
+                    }
+                    else if (donatorType.equals("C")){
+                        String cnpj = rs.getString("CNPJ");
+                        String tradingName = rs.getString("TRADING_NAME");
+                        String companyName = rs.getString("COMPANY_NAME");
+                        Date foundationDate = rs.getDate("FOUNDATION_DATE");
+                        return new Company(id, email, password, bio, new Address(street, number, complement, neighborhood, city, cep, state), cnpj, tradingName, companyName, foundationDate);
+                    }
                 }
-                else if (donatorType.equals("C")){
-                    String cnpj = rs.getString("CNPJ");
-                    String tradingName = rs.getString("TRADING_NAME");
-                    String companyName = rs.getString("COMPANY_NAME");
-                    Date foundationDate = rs.getDate("FOUNDATION_DATE");
-                    return new Company(id, email, password, bio, new Address(street, number, complement, neighborhood, city, cep, state), donatorType, cnpj, tradingName, companyName, foundationDate);
-                }
-            }
-        } catch (SQLException e){
-            e.printStackTrace();
         }
-        return null;
+        throw new Exception("Usuário ou senha incorretos.");
     }
 
     private void checkLogin(Donator donator, boolean login) throws Exception{

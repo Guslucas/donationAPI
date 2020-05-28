@@ -4,11 +4,11 @@ public class Response {
 
     public String status;
     public String errorMessage;
-    public Object objective;
+    public Object object;
 
     public Response(Object obj){
         this.status = "Ok";
-        this.objective = obj;
+        this.object = obj;
     }
 
     public Response(String message) {

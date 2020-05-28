@@ -74,20 +74,21 @@ public class CampaignDAO {
                     MoneyCampaign mc = new MoneyCampaign(id, name, description, type, startDate, endDate, goal);
                     campaignList.add(mc);
                 } else if (type.equals("PRODUCT")){
-                    String objectivesQuery = "SELECT * FROM Objective";
-                    List<Objective> objectiveList = new ArrayList<>();
-
-                    /*try (Connection connection2 = jdbcTemplate.getDataSource().getConnection()){
-                        Statement stmt2 = connection2.createStatement();
-                        ResultSet rs2 = stmt2.executeQuery(objectivesQuery);
-                        while (rs2.next()){
-                            long objectiveId = rs2.getLong("ID");
-                            int objectiveQuantity = rs2.getInt("QUANTITY");
-                            pc.getObjectives();
-                        }
-                    } */
-                    ProductCampaign pc = new ProductCampaign(id, name, description, type, startDate, endDate, objectiveList);
-                    campaignList.add(pc);
+//                    String objectivesQuery = "SELECT * FROM Objective";
+//                    List<Objective> objectiveList = new ArrayList<>();
+//
+//                    try (Connection connection2 = jdbcTemplate.getDataSource().getConnection()){
+//                        Statement stmt2 = connection2.createStatement();
+//                        ResultSet rs2 = stmt2.executeQuery(objectivesQuery);
+//                        while (rs2.next()){
+//                            long objectiveId = rs2.getLong("ID");
+//                            int objectiveQuantity = rs2.getInt("QUANTITY");
+//                            ProductCampaign mc = new ProductCampaign();
+//                            campaignList.add(pc);
+//                        }
+//                    }
+//                    ProductCampaign pc = new ProductCampaign(id, name, description, type, startDate, endDate, objectiveList);
+//                    campaignList.add(pc);
                 }
             }
             rs.close();

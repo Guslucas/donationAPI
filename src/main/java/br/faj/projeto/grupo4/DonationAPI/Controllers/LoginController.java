@@ -21,6 +21,5 @@ public class LoginController {
         } catch (Exception ex){
             return new Response(ex.getMessage());
         }
-
     }
 }

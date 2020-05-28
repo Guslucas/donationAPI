@@ -13,14 +13,8 @@ public class CampaignController {
     @Autowired
     CampaignDAO dao;
 
-    @GetMapping("/Campaign")
+    @GetMapping("/campaign")
     public List<Campaign> getCampaigns(){
         return dao.getCampaigns();
-    }
-
-    @PostMapping("/CampaignPost")
-    public Campaign postCampaign(@RequestBody MoneyCampaign mc){
-        dao.inserir(mc);
-        return mc;
     }
 }

@@ -1,55 +1,83 @@
-//package br.faj.projeto.grupo4.DonationAPI.Dao;
-//
-//import br.faj.projeto.grupo4.DonationAPI.Company;
-//import br.faj.projeto.grupo4.DonationAPI.Donator;
-//import br.faj.projeto.grupo4.DonationAPI.Person;
-//import org.springframework.beans.factory.annotation.Autowired;
-//import org.springframework.jdbc.core.JdbcTemplate;
-//import org.springframework.stereotype.Repository;
-//
-//import java.sql.Connection;
-//import java.sql.Date;
-//import java.sql.PreparedStatement;
-//import java.sql.SQLException;
-//
-//@Repository
-//public class SignInDAO {
-//    @Autowired
-//    private JdbcTemplate jdbcTemplate;
-//
-//    public Donator cadastrar (Donator donator){
-//        String insert = "INSERT INTO DONATOR (ID, EMAIL, PASSWORD, BIO, TYPE, CPF, NAME, SURNAME," +
-//                "BIRTHDATE, CNPJ, TRADING_NAME, COMPANY_NAME, FOUNDATIONDATE, ID_ADDRESS)" +
-//                "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
-//        try (Connection connection = jdbcTemplate.getDataSource().getConnection()) {
-//            PreparedStatement preparedStatement = connection.prepareStatement(insert);
-//            preparedStatement.setLong(1, donator.getId());
-//            preparedStatement.setString(2, donator.getEmail());
-//            preparedStatement.setString(3, donator.getPassword());
-//            preparedStatement.setString(4, donator.getBio());
-//            preparedStatement.setString(5, donator.getType());
-//            if (donator.getType().equals("Person")){
-//                Person person = (Person) donator;
-//                preparedStatement.setString(6, person.getCpf());
-//                preparedStatement.setString(7, person.getName());
-//                preparedStatement.setString(8, person.getSurname());
-//                preparedStatement.setDate(9, (Date) person.getBirthDate());
-//                preparedStatement.setString(14, person.getAddressFicticio());
-//                return new Person();
-//            }
-//            else if(donator.getType().equals("Company")){
-//                Company company = (Company) donator;
-//                preparedStatement.setString(10, company.getCnpj());
-//                preparedStatement.setString(11, company.getTradingName());
-//                preparedStatement.setString(12, company.getCompanyName());
-//                preparedStatement.setDate(13, (Date) company.getFoundationDate());
-//                preparedStatement.setString(14, company.getAddressFicticio());
-//                return company;
-//            }
-//            int result = preparedStatement.executeUpdate();
-//        } catch (SQLException e) {
-//            e.printStackTrace();
-//        }
-//        return null;
-//    }
-//}
+package br.faj.projeto.grupo4.DonationAPI.Dao;
+
+import br.faj.projeto.grupo4.DonationAPI.Address;
+import br.faj.projeto.grupo4.DonationAPI.Company;
+import br.faj.projeto.grupo4.DonationAPI.Donator;
+import br.faj.projeto.grupo4.DonationAPI.Person;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.stereotype.Repository;
+
+import java.sql.*;
+
+@Repository
+public class SignInDAO {
+    @Autowired
+    private JdbcTemplate jdbcTemplate;
+
+    public Donator cadastrar (Donator donator) throws Exception{
+
+
+        String insertPerson = "INSERT INTO DONATOR (Email, Password, Bio, Type, Cpf, Name, Surname, Birth_Date," +
+                "Street, Number, Complement, Neighborhood, City, Cep, State)" +
+                "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+
+        String insertCompany = "INSERT INTO DONATOR (Email, Password, Bio, Type, " +
+                "Cnpj, Trading_Name, Company_Name, Foundation_Date," +
+                "Street, Number, Complement, Neighborhood, City, Cep, State)" +
+                "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+
+        PreparedStatement preparedStatement = null;
+        try (Connection connection = jdbcTemplate.getDataSource().getConnection()) {
+
+            if (donator instanceof Person){
+                preparedStatement = connection.prepareStatement(insertPerson, Statement.RETURN_GENERATED_KEYS);
+                Person person = (Person) donator;
+                System.out.println(person);
+                preparedStatement.setString(4, "P");
+                preparedStatement.setString(5, person.getCpf());
+                preparedStatement.setString(6, person.getName());
+                preparedStatement.setString(7, person.getSurname());
+                preparedStatement.setDate(8, new Date (person.getBirthDate().getTime()));
+            }
+            else if(donator instanceof Company){
+                preparedStatement = connection.prepareStatement(insertCompany, Statement.RETURN_GENERATED_KEYS);
+                Company company = (Company) donator;
+                System.out.println(company);
+                preparedStatement.setString(4, "C");
+                preparedStatement.setString(5, company.getCnpj());
+                preparedStatement.setString(6, company.getTradingName());
+                preparedStatement.setString(7, company.getCompanyName());
+                preparedStatement.setDate(8, (Date) company.getFoundationDate());
+            }
+
+            preparedStatement.setString(1, donator.getEmail());
+            preparedStatement.setString(2, donator.getPassword());
+            preparedStatement.setString(3, donator.getBio());
+            Address donatorAddress = donator.getAddress();
+            preparedStatement.setString(9, donatorAddress.getStreet());
+            preparedStatement.setString(10, donatorAddress.getNumber());
+            preparedStatement.setString(11, donatorAddress.getComplement());
+            preparedStatement.setString(12, donatorAddress.getNeighborhood());
+            preparedStatement.setString(13, donatorAddress.getCity());
+            preparedStatement.setString(14, donatorAddress.getCep());
+            preparedStatement.setString(15, donatorAddress.getState());
+
+            int result = preparedStatement.executeUpdate();
+            if (result == 1){
+                ResultSet generatedKeys = preparedStatement.getGeneratedKeys();
+                generatedKeys.next();
+                long id = generatedKeys.getLong(1);
+                donator.setId(id);
+                generatedKeys.close();
+                return donator;
+            }
+
+        } finally {
+            if (preparedStatement != null){
+                preparedStatement.close();
+            }
+        }
+        throw new Exception("Erro.");
+    }
+}
