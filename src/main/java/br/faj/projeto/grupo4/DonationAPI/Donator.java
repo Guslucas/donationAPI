@@ -6,15 +6,11 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import java.util.ArrayList;
 import java.util.List;
 
-//@JsonTypeInfo(
-//        use = JsonTypeInfo.Id.NAME,
-//        include = JsonTypeInfo.As.PROPERTY,
-//        property = "Type")
-//@JsonSubTypes({
-//        @JsonSubTypes.Type(value = Person.class, name = "person"),
-//        @JsonSubTypes.Type(value = Company.class, name = "company")
-//})
-
+@JsonTypeInfo(use=JsonTypeInfo.Id.NAME, include=JsonTypeInfo.As.PROPERTY, property="type")
+@JsonSubTypes({
+        @JsonSubTypes.Type(value = Person.class),
+        @JsonSubTypes.Type(value = Company.class)
+})
 public abstract class Donator {
     long id;
     String email;

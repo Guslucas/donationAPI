@@ -48,7 +48,7 @@ public class SignInDAO {
                 preparedStatement.setString(5, company.getCnpj());
                 preparedStatement.setString(6, company.getTradingName());
                 preparedStatement.setString(7, company.getCompanyName());
-                preparedStatement.setDate(8, (Date) company.getFoundationDate());
+                preparedStatement.setDate(8, new Date(company.getFoundationDate().getTime()));
             }
 
             preparedStatement.setString(1, donator.getEmail());

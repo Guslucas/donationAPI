@@ -15,27 +15,6 @@ public class SignInController {
     @Autowired
     SignInDAO dao;
 
-//    @PostMapping ("/signinCompany")
-//    public Response postCompany (@RequestBody Company company){
-//        try {
-//            System.out.println(company.toString());
-//            return new Response (dao.cadastrar(company));
-//        } catch (Exception ex) {
-//            ex.printStackTrace();
-//            return new Response(ex.getMessage());
-//        }
-//    }
-//    @PostMapping ("/signinPerson")
-//    public Response postPerson (@RequestBody Person person){
-//        try {
-//            System.out.println(person.toString());
-//            return new Response (dao.cadastrar(person));
-//        } catch (Exception ex) {
-//            ex.printStackTrace();
-//            return new Response(ex.getMessage());
-//        }
-//    }
-
     @PostMapping ("/signin")
     public Response postDonator (@RequestBody Donator donator){
         try {
