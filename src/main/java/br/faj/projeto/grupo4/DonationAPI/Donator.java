@@ -11,6 +11,7 @@ import java.util.List;
         @JsonSubTypes.Type(value = Person.class),
         @JsonSubTypes.Type(value = Company.class)
 })
+
 public abstract class Donator {
     long id;
     String email;

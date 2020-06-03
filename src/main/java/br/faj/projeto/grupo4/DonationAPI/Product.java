@@ -2,27 +2,22 @@ package br.faj.projeto.grupo4.DonationAPI;
 
 public class Product {
     long id;
-    String description;
+    String type;
     String name;
-    Category category;
 
-    public Product(long id, String description, String name, Category category) {
+    public Product(long id, String type, String name) {
         this.id = id;
-        this.description = description;
+        this.type = type;
         this.name = name;
-        this.category = category;
     }
 
     public long getId() {
         return id;
     }
     public String getDescription() {
-        return description;
+        return type;
     }
     public String getName() {
         return name;
-    }
-    public Category getCategory() {
-        return category;
     }
 }

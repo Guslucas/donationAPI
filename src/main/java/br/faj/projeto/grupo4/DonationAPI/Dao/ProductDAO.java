@@ -14,17 +14,20 @@ public class ProductDAO {
     @Autowired
     private JdbcTemplate jdbcTemplate;
 
-    public List<Product> getProduct(){
+    public List<Product> getProducts(){
         String query = "SELECT * FROM PRODUCT";
         List<Product> productList = new ArrayList<>();
 
-        try (Connection connection1 = jdbcTemplate.getDataSource().getConnection()) {
-            PreparedStatement preparedStatement = connection1.prepareStatement(query);
+        try (Connection connection = jdbcTemplate.getDataSource().getConnection()) {
+            PreparedStatement preparedStatement = connection.prepareStatement(query);
             ResultSet rs = preparedStatement.executeQuery();
             while (rs.next()) {
-                long id = rs.getLong("ID");
-                String description = rs.getString("DESCRIPTION");
+                long id = rs.getLong("ID_PRODUCT");
+                String type = rs.getString("TYPE");
                 String name = rs.getString("NAME");
+
+                Product p = new Product(id, type, name);
+                productList.add(p);
             }
             rs.close();
             preparedStatement.close();

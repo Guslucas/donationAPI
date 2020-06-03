@@ -17,14 +17,13 @@ public class SignInDAO {
 
     public Donator cadastrar (Donator donator) throws Exception{
 
-
-        String insertPerson = "INSERT INTO DONATOR (Email, Password, Bio, Type, Cpf, Name, Surname, Birth_Date," +
-                "Street, Number, Complement, Neighborhood, City, Cep, State)" +
+        String insertPerson = "INSERT INTO Donator (Email, Password, BIO, Type, CPF, Name, Surname, BIRTH_DATE," +
+                "STREET, Number , COMPLEMENT, NEIGHBORHOOD, CITY, CEP, STATE)" +
                 "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
-        String insertCompany = "INSERT INTO DONATOR (Email, Password, Bio, Type, " +
-                "Cnpj, Trading_Name, Company_Name, Foundation_Date," +
-                "Street, Number, Complement, Neighborhood, City, Cep, State)" +
+        String insertCompany = "INSERT INTO Donator (Email, Password, BIO, Type, " +
+                "CNPJ, Trading_Name, Company_Name, FOUNDATION_DATE," +
+                "STREET, Number, COMPLEMENT, NEIGHBORHOOD, CITY, CEP, STATE)" +
                 "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
         PreparedStatement preparedStatement = null;

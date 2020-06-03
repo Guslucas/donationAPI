@@ -1,6 +1,15 @@
 package br.faj.projeto.grupo4.DonationAPI;
 
+import com.fasterxml.jackson.annotation.JsonSubTypes;
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
+
 import java.util.Date;
+
+@JsonTypeInfo(use=JsonTypeInfo.Id.NAME, include=JsonTypeInfo.As.PROPERTY, property="type")
+@JsonSubTypes({
+        @JsonSubTypes.Type(value = ProductDonation.class),
+        @JsonSubTypes.Type(value = MoneyDonation.class)
+})
 
 public abstract class Donation {
 

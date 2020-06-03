@@ -9,10 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -26,12 +23,13 @@ public class LoginDAO {
         checkLogin (donator, true);
 
         String query = "SELECT * FROM Donator "
-                + "WHERE Email = '" + donator.getEmail() + "' and Password = '" + donator.getPassword() + "'";
+                + "WHERE Email = ? and Password = ?";
 
         try (Connection connection = jdbcTemplate.getDataSource().getConnection();
-            Statement stmt = connection.createStatement();
-            ResultSet rs = stmt.executeQuery(query)){
-
+             PreparedStatement ps = connection.prepareStatement(query)){
+                ps.setString(1, donator.getEmail());
+                ps.setString(2, donator.getPassword());
+                ResultSet rs = ps.executeQuery();
                 while (rs.next()){
                     long id = rs.getLong("ID_DONATOR");
                     String email = rs.getString("EMAIL");
@@ -61,6 +59,7 @@ public class LoginDAO {
                         return new Company(id, email, password, bio, new Address(street, number, complement, neighborhood, city, cep, state), cnpj, tradingName, companyName, foundationDate);
                     }
                 }
+                rs.close();
         }
         throw new Exception("Usuário ou senha incorretos.");
     }

@@ -19,6 +19,7 @@ public class LoginController {
         try{
             return new Response (dao.login(d));
         } catch (Exception ex){
+            ex.printStackTrace();
             return new Response(ex.getMessage());
         }
     }
