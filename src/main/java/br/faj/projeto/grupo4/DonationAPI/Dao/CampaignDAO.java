@@ -16,7 +16,7 @@ public class CampaignDAO {
 
     public Campaign inserir(Campaign c) {
         String type = c.getType();
-        if (type.equals("MONEY")){
+        if (type.equals("M")){
             MoneyCampaign mc = (MoneyCampaign) c;
             String sqlInsert = "INSERT INTO Campaign (ID, NAME, DESCRIPTION, STARTDATE, ENDDATE, GOAL)"
                     + "VALUES (?, ?, ?, ?, ?, ?,)";
@@ -27,14 +27,13 @@ public class CampaignDAO {
                 preparedStatement.setString(3, mc.getDescription());
                 preparedStatement.setDate(4, (Date) mc.getStartDate());
                 preparedStatement.setDate(5, (Date) mc.getEndDate());
-                preparedStatement.setFloat(6, mc.getGoal());
                 int result = preparedStatement.executeUpdate();
             } catch (SQLException e) {
                 e.printStackTrace();
             }
             return mc;
         }
-        else if (type.equals("PRODUCT")){
+        else if (type.equals("P")){
             ProductCampaign pc = (ProductCampaign) c;
             String sqlInsert = "INSERT INTO Campaign (ID, NAME, DESCRIPTION, STARTDATE, ENDDATE, OBJECTIVES)"
                     + "VALUES (?, ?, ?, ?, ?, ?,)";
@@ -45,7 +44,6 @@ public class CampaignDAO {
                 preparedStatement.setString(3, pc.getDescription());
                 preparedStatement.setDate(4, (Date) pc.getStartDate());
                 preparedStatement.setDate(5, (Date) pc.getEndDate());
-                Objective[] objective = (Objective[]) pc.getObjectives().toArray();
                 preparedStatement.setArray(6, (null));
                 int result = preparedStatement.executeUpdate();
             } catch (SQLException e) {
@@ -57,8 +55,24 @@ public class CampaignDAO {
     }
 
     public List<Campaign> getCampaigns() {
-        String query = "SELECT * FROM Campaign";
+        String query = "SELECT\n" +
+                "C.*,\n" +
+                "(SELECT COUNT(*) FROM DONATION D\n" +
+                "JOIN Item I ON I.ID_Donation = D.ID_Donation\n" +
+                "JOIN Product P ON P.ID_Product = I.ID_Product\n" +
+                "WHERE D.Type = 'P')/(SELECT SUM(O.Quantity) FROM\n" +
+                "Campaign C1\n" +
+                "JOIN Objective O ON O.ID_Campaign = C1.ID_Campaign\n" +
+                "JOIN Product P ON P.ID_Product = O.ID_Product\n" +
+                "WHERE C1.Type='P') * 100 AS PERCENTAGE\n" +
+                "FROM Campaign C WHERE C.Type = 'P'\n" +
+                "UNION ALL\n" +
+                "SELECT C.*,\n" +
+                "(SELECT NVL((SUM(D.Monetary_Value)/ C.Monetary_Goal) * 100, 0) FROM \"Donation\" D WHERE D.='M' AND D.ID_Campaign = C.ID_Campaign) AS PERCENTAGE\n" +
+                "FROM Campaign C WHERE C.Type='M'";
+
         List<Campaign> campaignList = new ArrayList<>();
+
         try (Connection connection1 = jdbcTemplate.getDataSource().getConnection()) {
             PreparedStatement preparedStatement = connection1.prepareStatement(query);
             ResultSet rs = preparedStatement.executeQuery();
@@ -69,28 +83,18 @@ public class CampaignDAO {
                 String type =  rs.getString("TYPE");
                 Date startDate = rs.getDate("STARTDATE");
                 Date endDate = rs.getDate("ENDDATE");
-                if (type.equals("MONEY")){
-                    float goal = rs.getFloat("GOAL");
-                    MoneyCampaign mc = new MoneyCampaign(id, name, description, type, startDate, endDate, goal);
+                float percentage = 0;
+
+                if (type.equals("M")){
+                   // float goal = rs.getFloat("GOAL");
+                    MoneyCampaign mc = new MoneyCampaign(id, name, description, type, startDate, endDate, percentage);
                     campaignList.add(mc);
-                } else if (type.equals("PRODUCT")){
-//                    String objectivesQuery = "SELECT * FROM Objective";
-//                    List<Objective> objectiveList = new ArrayList<>();
-//
-//                    try (Connection connection2 = jdbcTemplate.getDataSource().getConnection()){
-//                        Statement stmt2 = connection2.createStatement();
-//                        ResultSet rs2 = stmt2.executeQuery(objectivesQuery);
-//                        while (rs2.next()){
-//                            long objectiveId = rs2.getLong("ID");
-//                            int objectiveQuantity = rs2.getInt("QUANTITY");
-//                            ProductCampaign mc = new ProductCampaign();
-//                            campaignList.add(pc);
-//                        }
-//                    }
-//                    ProductCampaign pc = new ProductCampaign(id, name, description, type, startDate, endDate, objectiveList);
-//                    campaignList.add(pc);
+                } else if (type.equals("P")){
+                    ProductCampaign pc = new ProductCampaign(id, name, description, type, startDate, endDate, percentage);
+                    campaignList.add(pc);
                 }
             }
+
             rs.close();
             preparedStatement.close();
         } catch (SQLException e) {
@@ -99,17 +103,30 @@ public class CampaignDAO {
         return campaignList;
     }
 
-    public void deleteCampaign(Campaign c){
-        String deleteSql = "DELETE FROM MONEYCAMPAIGN WHERE ID = ?";
+    public List<Product> getProductFromCampaign(){
+        List<Product> productList = new ArrayList<>();
+        String query = "SELECT P.* FROM\n" +
+                "CAMPAIGN C\n" +
+                "JOIN OBJECTIVE O ON O.ID_CAMPAIGN = C.ID_CAMPAIGN\n" +
+                "JOIN PRODUCT P ON P.ID_PRODUCT = O.ID_PRODUCT\n" +
+                "WHERE C.ID_CAMPAIGN = 1 AND C.TYPEE = 'P';\n";
 
         try (Connection connection = jdbcTemplate.getDataSource().getConnection()) {
-            PreparedStatement preparedStatement = connection.prepareStatement(deleteSql);
+            PreparedStatement preparedStatement = connection.prepareStatement(query);
             ResultSet rs = preparedStatement.executeQuery();
-            preparedStatement.setLong(1, c.getId());
+            while (rs.next()) {
+                long id = rs.getLong("ID_PRODUCT");
+                String type = rs.getString("TYPE");
+                String name = rs.getString("NAME");
 
-            int result = preparedStatement.executeUpdate();
+                Product p = new Product(id, type, name);
+                productList.add(p);
+            }
+            rs.close();
+            preparedStatement.close();
         } catch (SQLException e) {
             e.printStackTrace();
         }
+        return productList;
     }
 }
