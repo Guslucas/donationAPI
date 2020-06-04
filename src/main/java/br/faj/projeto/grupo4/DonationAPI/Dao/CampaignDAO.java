@@ -58,7 +58,7 @@ public class CampaignDAO {
         String query = "SELECT\n" +
                 "C.*,\n" +
                 "(SELECT COUNT(*) FROM DONATION D\n" +
-                "JOIN Item I ON I.ID_Donation = D.ID_Donation\n" +
+                "JOIN Item I ON I.ID_DONATION = D.ID_DONATION\n" +
                 "JOIN Product P ON P.ID_Product = I.ID_Product\n" +
                 "WHERE D.Type = 'P')/(SELECT SUM(O.Quantity) FROM\n" +
                 "Campaign C1\n" +
@@ -68,7 +68,7 @@ public class CampaignDAO {
                 "FROM Campaign C WHERE C.Type = 'P'\n" +
                 "UNION ALL\n" +
                 "SELECT C.*,\n" +
-                "(SELECT NVL((SUM(D.Monetary_Value)/ C.Monetary_Goal) * 100, 0) FROM \"Donation\" D WHERE D.='M' AND D.ID_Campaign = C.ID_Campaign) AS PERCENTAGE\n" +
+                "(SELECT NVL((SUM(D.Monetary_Value)/ C.Monetary_Goal) * 100, 0) FROM Donation D WHERE D.TYPE='M' AND D.ID_Campaign = C.ID_Campaign) AS PERCENTAGE\n" +
                 "FROM Campaign C WHERE C.Type='M'";
 
         List<Campaign> campaignList = new ArrayList<>();
@@ -77,12 +77,12 @@ public class CampaignDAO {
             PreparedStatement preparedStatement = connection1.prepareStatement(query);
             ResultSet rs = preparedStatement.executeQuery();
             while (rs.next()) {
-                long id = rs.getLong("ID");
+                long id = rs.getLong("ID_CAMPAIGN");
                 String name = rs.getString("NAME");
                 String description = rs.getString("DESCRIPTION");
                 String type =  rs.getString("TYPE");
-                Date startDate = rs.getDate("STARTDATE");
-                Date endDate = rs.getDate("ENDDATE");
+                Date startDate = rs.getDate("START");
+                Date endDate = rs.getDate("END");
                 float percentage = 0;
 
                 if (type.equals("M")){
@@ -103,19 +103,20 @@ public class CampaignDAO {
         return campaignList;
     }
 
-    public List<Product> getProductFromCampaign(){
+    public List<Product> getProductFromCampaign(int id){
         List<Product> productList = new ArrayList<>();
         String query = "SELECT P.* FROM\n" +
                 "CAMPAIGN C\n" +
                 "JOIN OBJECTIVE O ON O.ID_CAMPAIGN = C.ID_CAMPAIGN\n" +
                 "JOIN PRODUCT P ON P.ID_PRODUCT = O.ID_PRODUCT\n" +
-                "WHERE C.ID_CAMPAIGN = 1 AND C.TYPEE = 'P';\n";
+                "WHERE C.ID_CAMPAIGN = ? AND C.TYPEE = 'P';\n";
 
         try (Connection connection = jdbcTemplate.getDataSource().getConnection()) {
             PreparedStatement preparedStatement = connection.prepareStatement(query);
+            preparedStatement.setInt(1, id);
             ResultSet rs = preparedStatement.executeQuery();
             while (rs.next()) {
-                long id = rs.getLong("ID_PRODUCT");
+                long productID = rs.getLong("ID_PRODUCT");
                 String type = rs.getString("TYPE");
                 String name = rs.getString("NAME");
 
