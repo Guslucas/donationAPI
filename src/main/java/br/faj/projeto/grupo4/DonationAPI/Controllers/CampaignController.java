@@ -20,7 +20,7 @@ public class CampaignController {
     }
 
     @GetMapping("/campaign/{id}/product")
-    public List<Product> getProductFromCampaign(){
-        return dao.getProductFromCampaign();
+    public List<Product> getProductFromCampaign(@PathVariable("id") int id){
+        return dao.getProductFromCampaign(id);
     }
 }

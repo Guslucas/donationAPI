@@ -9251,3 +9251,143 @@ WHERE C.ID_CAMPAIGN = 1 AND C.TYPEE = 'P';
 	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:628)
 	at org.apache.tomcat.util.threads.TaskThread$WrappingRunnable.run(TaskThread.java:61)
 	at java.base/java.lang.Thread.run(Thread.java:835)
+2020-06-03 20:25:23 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "Donation" not found; SQL statement:
+SELECT
+C.*,
+(SELECT COUNT(*) FROM DONATION D
+JOIN Item I ON I.ID_Donation = D.ID_Donation
+JOIN Product P ON P.ID_Product = I.ID_Product
+WHERE D.Type = 'P')/(SELECT SUM(O.Quantity) FROM
+Campaign C1
+JOIN Objective O ON O.ID_Campaign = C1.ID_Campaign
+JOIN Product P ON P.ID_Product = O.ID_Product
+WHERE C1.Type='P') * 100 AS PERCENTAGE
+FROM Campaign C WHERE C.Type = 'P'
+UNION ALL
+SELECT C.*,
+(SELECT NVL((SUM(D.Monetary_Value)/ C.Monetary_Goal) * 100, 0) FROM "Donation" D WHERE D.='M' AND D.ID_Campaign = C.ID_Campaign) AS PERCENTAGE
+FROM Campaign C WHERE C.Type='M' [42102-200]
+2020-06-03 20:29:21 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "Donation" not found; SQL statement:
+SELECT
+C.*,
+(SELECT COUNT(*) FROM DONATION D
+JOIN Item I ON I.ID_DONATION = D.ID_DONATION
+JOIN Product P ON P.ID_Product = I.ID_Product
+WHERE D.Type = 'P')/(SELECT SUM(O.Quantity) FROM
+Campaign C1
+JOIN Objective O ON O.ID_Campaign = C1.ID_Campaign
+JOIN Product P ON P.ID_Product = O.ID_Product
+WHERE C1.Type='P') * 100 AS PERCENTAGE
+FROM Campaign C WHERE C.Type = 'P'
+UNION ALL
+SELECT C.*,
+(SELECT NVL((SUM(D.Monetary_Value)/ C.Monetary_Goal) * 100, 0) FROM "Donation" D WHERE D.='M' AND D.ID_Campaign = C.ID_Campaign) AS PERCENTAGE
+FROM Campaign C WHERE C.Type='M' [42102-200]
+2020-06-03 20:32:58 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "SELECT
+C.*,
+(SELECT COUNT(*) FROM DONATION D
+JOIN ITEM I ON I.ID_DONATION = D.ID_DONATION
+JOIN PRODUCT P ON P.ID_PRODUCT = I.ID_PRODUCT
+WHERE D.TYPE = 'P')/(SELECT SUM(O.QUANTITY) FROM
+CAMPAIGN C1
+JOIN OBJECTIVE O ON O.ID_CAMPAIGN = C1.ID_CAMPAIGN
+JOIN PRODUCT P ON P.ID_PRODUCT = O.ID_PRODUCT
+WHERE C1.TYPE='P') * 100 AS PERCENTAGE
+FROM CAMPAIGN C WHERE C.TYPE = 'P'
+UNION ALL
+SELECT C.*,
+(SELECT NVL((SUM(D.MONETARY_VALUE)/ C.MONETARY_GOAL) * 100, 0) FROM DONATION D WHERE D.=[*]'M' AND D.ID_CAMPAIGN = C.ID_CAMPAIGN) AS PERCENTAGE
+FROM CAMPAIGN C WHERE C.TYPE='M'"; expected "identifier"; SQL statement:
+SELECT
+C.*,
+(SELECT COUNT(*) FROM DONATION D
+JOIN Item I ON I.ID_DONATION = D.ID_DONATION
+JOIN Product P ON P.ID_Product = I.ID_Product
+WHERE D.Type = 'P')/(SELECT SUM(O.Quantity) FROM
+Campaign C1
+JOIN Objective O ON O.ID_Campaign = C1.ID_Campaign
+JOIN Product P ON P.ID_Product = O.ID_Product
+WHERE C1.Type='P') * 100 AS PERCENTAGE
+FROM Campaign C WHERE C.Type = 'P'
+UNION ALL
+SELECT C.*,
+(SELECT NVL((SUM(D.Monetary_Value)/ C.Monetary_Goal) * 100, 0) FROM Donation D WHERE D.='M' AND D.ID_Campaign = C.ID_Campaign) AS PERCENTAGE
+FROM Campaign C WHERE C.Type='M' [42001-200]
+2020-06-03 20:39:16 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Column "ID" not found [42122-200]
+	at org.h2.message.DbException.getJdbcSQLException(DbException.java:453)
+	at org.h2.message.DbException.getJdbcSQLException(DbException.java:429)
+	at org.h2.message.DbException.get(DbException.java:205)
+	at org.h2.message.DbException.get(DbException.java:181)
+	at org.h2.jdbc.JdbcResultSet.getColumnIndex(JdbcResultSet.java:3169)
+	at org.h2.jdbc.JdbcResultSet.get(JdbcResultSet.java:3268)
+	at org.h2.jdbc.JdbcResultSet.getLong(JdbcResultSet.java:680)
+	at com.zaxxer.hikari.pool.HikariProxyResultSet.getLong(HikariProxyResultSet.java)
+	at br.faj.projeto.grupo4.DonationAPI.Dao.CampaignDAO.getCampaigns(CampaignDAO.java:80)
+	at br.faj.projeto.grupo4.DonationAPI.Dao.CampaignDAO$$FastClassBySpringCGLIB$$7ce54aa5.invoke(<generated>)
+	at org.springframework.cglib.proxy.MethodProxy.invoke(MethodProxy.java:218)
+	at org.springframework.aop.framework.CglibAopProxy$CglibMethodInvocation.invokeJoinpoint(CglibAopProxy.java:771)
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:163)
+	at org.springframework.aop.framework.CglibAopProxy$CglibMethodInvocation.proceed(CglibAopProxy.java:749)
+	at org.springframework.dao.support.PersistenceExceptionTranslationInterceptor.invoke(PersistenceExceptionTranslationInterceptor.java:139)
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:186)
+	at org.springframework.aop.framework.CglibAopProxy$CglibMethodInvocation.proceed(CglibAopProxy.java:749)
+	at org.springframework.aop.framework.CglibAopProxy$DynamicAdvisedInterceptor.intercept(CglibAopProxy.java:691)
+	at br.faj.projeto.grupo4.DonationAPI.Dao.CampaignDAO$$EnhancerBySpringCGLIB$$ded70253.getCampaigns(<generated>)
+	at br.faj.projeto.grupo4.DonationAPI.Controllers.CampaignController.getCampaigns(CampaignController.java:19)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
+	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:567)
+	at org.springframework.web.method.support.InvocableHandlerMethod.doInvoke(InvocableHandlerMethod.java:190)
+	at org.springframework.web.method.support.InvocableHandlerMethod.invokeForRequest(InvocableHandlerMethod.java:138)
+	at org.springframework.web.servlet.mvc.method.annotation.ServletInvocableHandlerMethod.invokeAndHandle(ServletInvocableHandlerMethod.java:105)
+	at org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter.invokeHandlerMethod(RequestMappingHandlerAdapter.java:879)
+	at org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter.handleInternal(RequestMappingHandlerAdapter.java:793)
+	at org.springframework.web.servlet.mvc.method.AbstractHandlerMethodAdapter.handle(AbstractHandlerMethodAdapter.java:87)
+	at org.springframework.web.servlet.DispatcherServlet.doDispatch(DispatcherServlet.java:1040)
+	at org.springframework.web.servlet.DispatcherServlet.doService(DispatcherServlet.java:943)
+	at org.springframework.web.servlet.FrameworkServlet.processRequest(FrameworkServlet.java:1006)
+	at org.springframework.web.servlet.FrameworkServlet.doGet(FrameworkServlet.java:898)
+	at javax.servlet.http.HttpServlet.service(HttpServlet.java:634)
+	at org.springframework.web.servlet.FrameworkServlet.service(FrameworkServlet.java:883)
+	at javax.servlet.http.HttpServlet.service(HttpServlet.java:741)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:231)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:166)
+	at org.apache.tomcat.websocket.server.WsFilter.doFilter(WsFilter.java:53)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:193)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:166)
+	at org.springframework.web.filter.RequestContextFilter.doFilterInternal(RequestContextFilter.java:100)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:119)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:193)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:166)
+	at org.springframework.web.filter.FormContentFilter.doFilterInternal(FormContentFilter.java:93)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:119)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:193)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:166)
+	at org.springframework.web.filter.CharacterEncodingFilter.doFilterInternal(CharacterEncodingFilter.java:201)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:119)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:193)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:166)
+	at org.apache.catalina.core.StandardWrapperValve.invoke(StandardWrapperValve.java:202)
+	at org.apache.catalina.core.StandardContextValve.invoke(StandardContextValve.java:96)
+	at org.apache.catalina.authenticator.AuthenticatorBase.invoke(AuthenticatorBase.java:541)
+	at org.apache.catalina.core.StandardHostValve.invoke(StandardHostValve.java:139)
+	at org.apache.catalina.valves.ErrorReportValve.invoke(ErrorReportValve.java:92)
+	at org.apache.catalina.core.StandardEngineValve.invoke(StandardEngineValve.java:74)
+	at org.apache.catalina.connector.CoyoteAdapter.service(CoyoteAdapter.java:343)
+	at org.apache.coyote.http11.Http11Processor.service(Http11Processor.java:373)
+	at org.apache.coyote.AbstractProcessorLight.process(AbstractProcessorLight.java:65)
+	at org.apache.coyote.AbstractProtocol$ConnectionHandler.process(AbstractProtocol.java:868)
+	at org.apache.tomcat.util.net.NioEndpoint$SocketProcessor.doRun(NioEndpoint.java:1590)
+	at org.apache.tomcat.util.net.SocketProcessorBase.run(SocketProcessorBase.java:49)
+	at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1128)
+	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:628)
+	at org.apache.tomcat.util.threads.TaskThread$WrappingRunnable.run(TaskThread.java:61)
+	at java.base/java.lang.Thread.run(Thread.java:835)
+2020-06-03 21:17:16 jdbc[13]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "DROP CONSTRAINT[*] PERSON_TYPE_CK"; expected "TABLE, INDEX, USER, SEQUENCE, CONSTANT, TRIGGER, VIEW, ROLE, ALIAS, SCHEMA, ALL, DOMAIN, TYPE, DATATYPE, AGGREGATE, SYNONYM"; SQL statement:
+Drop constraint PERSON_TYPE_CK [42001-200]
