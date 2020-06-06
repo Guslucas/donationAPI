@@ -14,7 +14,7 @@ public class ProductDAO {
     @Autowired
     private JdbcTemplate jdbcTemplate;
 
-    public List<Product> getProducts(){
+    public List<Product> getProducts() throws Exception {
         String query = "SELECT * FROM PRODUCT";
         List<Product> productList = new ArrayList<>();
 

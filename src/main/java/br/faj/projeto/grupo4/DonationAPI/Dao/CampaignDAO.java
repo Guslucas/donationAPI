@@ -54,7 +54,7 @@ public class CampaignDAO {
         return null;
     }
 
-    public List<Campaign> getCampaigns() {
+    public List<Campaign> getCampaigns() throws Exception {
         String query = "SELECT\n" +
                 "C.*,\n" +
                 "(SELECT COUNT(*) FROM DONATION D\n" +
@@ -65,11 +65,11 @@ public class CampaignDAO {
                 "JOIN Objective O ON O.ID_Campaign = C1.ID_Campaign\n" +
                 "JOIN Product P ON P.ID_Product = O.ID_Product\n" +
                 "WHERE C1.Type='P') * 100 AS PERCENTAGE\n" +
-                "FROM Campaign C WHERE C.Type = 'P'\n" +
+                "FROM Campaign C WHERE C.Type = 'P' AND END >= SYSDATE\n" +
                 "UNION ALL\n" +
                 "SELECT C.*,\n" +
                 "(SELECT NVL((SUM(D.Monetary_Value)/ C.Monetary_Goal) * 100, 0) FROM Donation D WHERE D.TYPE='M' AND D.ID_Campaign = C.ID_Campaign) AS PERCENTAGE\n" +
-                "FROM Campaign C WHERE C.Type='M'";
+                "FROM Campaign C WHERE C.Type='M' AND END >= SYSDATE";
 
         List<Campaign> campaignList = new ArrayList<>();
 
@@ -103,13 +103,13 @@ public class CampaignDAO {
         return campaignList;
     }
 
-    public List<Product> getProductFromCampaign(int id){
+    public List<Product> getProductFromCampaign(int id) throws Exception{
         List<Product> productList = new ArrayList<>();
         String query = "SELECT P.* FROM\n" +
                 "CAMPAIGN C\n" +
                 "JOIN OBJECTIVE O ON O.ID_CAMPAIGN = C.ID_CAMPAIGN\n" +
                 "JOIN PRODUCT P ON P.ID_PRODUCT = O.ID_PRODUCT\n" +
-                "WHERE C.ID_CAMPAIGN = ? AND C.TYPEE = 'P';\n";
+                "WHERE C.ID_CAMPAIGN = ? AND C.TYPE = 'P';\n";
 
         try (Connection connection = jdbcTemplate.getDataSource().getConnection()) {
             PreparedStatement preparedStatement = connection.prepareStatement(query);

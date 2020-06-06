@@ -4,6 +4,7 @@ import br.faj.projeto.grupo4.DonationAPI.Campaign;
 import br.faj.projeto.grupo4.DonationAPI.Dao.CampaignDAO;
 import br.faj.projeto.grupo4.DonationAPI.MoneyCampaign;
 import br.faj.projeto.grupo4.DonationAPI.Product;
+import br.faj.projeto.grupo4.DonationAPI.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -14,13 +15,28 @@ public class CampaignController {
     @Autowired
     CampaignDAO dao;
 
+//    @GetMapping("/campaign")
+//    public List<Campaign> getCampaigns(){
+//        return dao.getCampaigns();
+//    }
+
     @GetMapping("/campaign")
-    public List<Campaign> getCampaigns(){
-        return dao.getCampaigns();
+    public Response getCampaigns(){
+        try {
+            return new Response(dao.getCampaigns());
+        }catch (Exception ex){
+            ex.printStackTrace();
+            return new Response(ex.getMessage());
+        }
     }
 
     @GetMapping("/campaign/{id}/product")
-    public List<Product> getProductFromCampaign(@PathVariable("id") int id){
-        return dao.getProductFromCampaign(id);
+    public Response getProductFromCampaign(@PathVariable("id") int id){
+        try {
+            return new Response(dao.getProductFromCampaign(id));
+        }catch (Exception ex){
+            ex.printStackTrace();
+            return new Response(ex.getMessage());
+        }
     }
 }

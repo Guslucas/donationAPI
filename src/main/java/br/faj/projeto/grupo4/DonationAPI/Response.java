@@ -1,5 +1,7 @@
 package br.faj.projeto.grupo4.DonationAPI;
 
+import java.util.List;
+
 public class Response {
 
     public String status;
@@ -11,7 +13,7 @@ public class Response {
         this.object = obj;
     }
 
-    public Response(String message) {
+    public Response(String message){
         this.status = "Erro";
         this.errorMessage = message;
     }
