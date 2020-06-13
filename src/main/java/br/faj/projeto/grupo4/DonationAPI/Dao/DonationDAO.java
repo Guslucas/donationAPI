@@ -63,7 +63,7 @@ public class DonationDAO {
                     ProductDonation productDonation = (ProductDonation) donation;
                     List<Item> itemList = productDonation.getItems();
 
-                    for (int i = 0; i <= itemList.size(); i++) {
+                    for (int i = 0; i < itemList.size(); i++) {
                         insertItem(itemList.get(i), id);
                     }
                 }
@@ -88,11 +88,10 @@ public class DonationDAO {
             preparedStatement2.setNull(4, Types.VARCHAR);
             preparedStatement2.setNull(5, Types.VARCHAR);
 
+            int result = preparedStatement2.executeUpdate();
+            preparedStatement2.close();
         } catch (SQLException e) {
             e.printStackTrace();
         }
-
-        int result = preparedStatement2.executeUpdate();
-        preparedStatement2.close();
     }
 }
