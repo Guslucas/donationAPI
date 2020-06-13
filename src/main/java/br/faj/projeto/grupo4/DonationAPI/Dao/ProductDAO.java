@@ -36,4 +36,33 @@ public class ProductDAO {
         }
         return productList;
     }
+
+    public Product addProduct(Product product) throws Exception {
+        String insertProduct = "INSERT INTO PRODUCT (NAME, TYPE) VALUES (?, ?)";
+
+        PreparedStatement preparedStatement = null;
+
+        try (Connection connection = jdbcTemplate.getDataSource().getConnection()){
+
+            preparedStatement = connection.prepareStatement(insertProduct, Statement.RETURN_GENERATED_KEYS);
+
+            preparedStatement.setString(1, product.getName());
+            preparedStatement.setString(2, product.getType());
+
+            int result = preparedStatement.executeUpdate();
+            if (result == 1){
+                ResultSet generatedKeys = preparedStatement.getGeneratedKeys();
+                generatedKeys.next();
+                long id = generatedKeys.getLong(1);
+                product.setId(id);
+                generatedKeys.close();
+                return product;
+            }
+        } finally {
+            if (preparedStatement != null){
+                preparedStatement.close();
+            }
+        }
+        throw new Exception("Erro.");
+    }
 }

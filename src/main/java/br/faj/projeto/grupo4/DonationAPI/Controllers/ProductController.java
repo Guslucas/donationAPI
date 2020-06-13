@@ -6,6 +6,8 @@ import br.faj.projeto.grupo4.DonationAPI.Response;
 //import com.sun.jdi.event.ExceptionEvent;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
@@ -20,6 +22,17 @@ public class ProductController {
         try {
             return new Response(dao.getProducts());
         }catch (Exception ex){
+            ex.printStackTrace();
+            return new Response(ex.getMessage());
+        }
+    }
+
+    @PostMapping("/product")
+    public Response addProduct(@RequestBody Product product){
+        try {
+            System.out.println(product);
+            return new Response(dao.addProduct(product));
+        } catch (Exception ex) {
             ex.printStackTrace();
             return new Response(ex.getMessage());
         }
