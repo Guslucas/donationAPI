@@ -5,13 +5,13 @@ import org.springframework.stereotype.Repository;
 
 public class Address {
 
-    String street;
-    String number;
-    String complement;
-    String neighborhood;
-    String city;
-    String cep;
-    String state;
+    private String street;
+    private String number;
+    private String complement;
+    private String neighborhood;
+    private String city;
+    private String cep;
+    private String state;
 
     public Address(String street, String number, String complement, String neighborhood, String city, String cep, String state) {
         this.street = street;

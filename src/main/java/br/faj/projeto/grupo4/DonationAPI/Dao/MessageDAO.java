@@ -18,61 +18,74 @@ public class MessageDAO {
     private JdbcTemplate jdbcTemplate;
 
     public List<Message> getMessages(long senderId){
-        String query = "SELECT * FROM MESSAGE WHERE ID_SENDER = ?";
+        String messageQuery = "SELECT * FROM MESSAGE WHERE ID_SENDER = ?";
 
-        List<Message> messages = new ArrayList<>();
+        Message message = new Message();
+        List<Message> messageList = new ArrayList<>();
 
         try (Connection connection = jdbcTemplate.getDataSource().getConnection()) {
-            PreparedStatement preparedStatement = connection.prepareStatement(query);
+            PreparedStatement preparedStatement = connection.prepareStatement(messageQuery);
             preparedStatement.setLong(1, senderId);
             ResultSet rs = preparedStatement.executeQuery();
+
             while (rs.next()) {
                 long messageId = rs.getLong("ID_MESSAGE");
+                //long sender = rs.getLong("ID_SENDER");
+                long receiverId = rs.getLong("ID_RECIPIENT");
                 Date date = rs.getDate("DATE");
                 String content = rs.getString("CONTENT");
+
+                message.setId(messageId);
+//                message.setSender(senderId);
+//                message.setReceiver(receiverId);
+                message.setDate(date);
+                message.setContent(content);
             }
             rs.close();
             preparedStatement.close();
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return messages;
+        return messageList;
     }
 
+    public Message sendMessage(Message message, long senderId) throws Exception {
+        String selectReceiver = "SELECT ID_DONATOR FROM DONATOR WHERE EMAIL = ?";
+        String insertMessage = "INSERT INTO MESSAGE (ID_SENDER, ID_RECIPIENT, DATE, CONTENT)" +
+                        "VALUES (?, ?, ?, ?)";
 
-
-
-
-
-    public Message sendMessage(Message message) throws Exception {
-        String query = "INSERT INTO MESSAGE (ID_MESSAGE, ID_SENDER, ID_RECIPIENT, DATE, CONTENT)" +
-                        "VALUES (?, ?, ?, ?, ?)";
-
-        PreparedStatement preparedStatement = null;
+        PreparedStatement preparedStatement1 = null;
+        PreparedStatement preparedStatement2 = null;
 
         try (Connection connection = jdbcTemplate.getDataSource().getConnection()) {
 
-            preparedStatement = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
-//            preparedStatement.setLong(2, );
-//            preparedStatement.setLong(3, );
-            preparedStatement.setDate(4, (java.sql.Date) new Date (message.getDate().getTime()));
-            preparedStatement.setString(5, message.getContent());
+            preparedStatement1 = connection.prepareStatement(selectReceiver);
+            preparedStatement1.setString(1, message.getReceiver().getEmail());
+            ResultSet rs = preparedStatement1.executeQuery();
+            while (rs.next()) {
+                long receiverId = rs.getLong("ID_DONATOR");
+                preparedStatement1.close();
 
-            int result = preparedStatement.executeUpdate();
-            if (result == 1){
-                ResultSet generatedKeys = preparedStatement.getGeneratedKeys();
-                generatedKeys.next();
-                long id = generatedKeys.getLong(1);
-                message.setId(id);
-                generatedKeys.close();
-                return message;
+                preparedStatement2 = connection.prepareStatement(insertMessage, Statement.RETURN_GENERATED_KEYS);
+                preparedStatement2.setLong(1, senderId);
+                preparedStatement2.setLong(2, receiverId);
+                preparedStatement2.setDate(3, (java.sql.Date) new Date(message.getDate().getTime()));
+                preparedStatement2.setString(4, message.getContent());
+
+                int result = preparedStatement2.executeUpdate();
+                if (result == 1) {
+                    ResultSet generatedKeys = preparedStatement2.getGeneratedKeys();
+                    generatedKeys.next();
+                    long messageId = generatedKeys.getLong(1);
+                    message.setId(messageId);
+                    generatedKeys.close();
+                }
+                preparedStatement2.close();
             }
 
-            preparedStatement.close();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
         return message;
     }
-
 }

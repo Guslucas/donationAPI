@@ -4,21 +4,20 @@ import java.util.Date;
 
 public class Item {
 
-    long id;
-    Date shelfLife;
-    Product product;
-    Donation donation;
-    String barCode;
-    String brand;
+    private long id;
+    private Date shelfLife;
+    private Product product;
+    private String barCode;
+    private String brand;
 
-    public Item(long id, Date shelfLife, Product product, Donation donation, String barCode, String brand) {
+    public Item(long id, Date shelfLife, Product product, String barCode, String brand) {
         this.id = id;
         this.shelfLife = shelfLife;
         this.product = product;
-        this.donation = donation;
         this.barCode = barCode;
         this.brand = brand;
     }
+    public Item(){}
 
     public long getId() {
         return id;
@@ -29,13 +28,21 @@ public class Item {
     public Product getProduct() {
         return product;
     }
-    public Donation getDonation() {
-        return donation;
-    }
     public String getBarCode() {
         return barCode;
     }
     public String getBrand() {
         return brand;
+    }
+
+    @Override
+    public String toString() {
+        return "Item{" +
+                "id=" + id +
+                ", shelfLife=" + shelfLife +
+                ", product=" + product +
+                ", barCode='" + barCode + '\'' +
+                ", brand='" + brand + '\'' +
+                '}';
     }
 }

@@ -4,10 +4,10 @@ import java.util.Date;
 
 public class MoneyDonation extends Donation {
 
-    float quantity;
+    private float quantity;
 
-    public MoneyDonation(long id, Date date, Campaign campaign, Donator donator, DonationStatus status, boolean deliver, float quantity) {
-        super(id, date, campaign, donator, status, deliver);
+    public MoneyDonation(long id, Date date, Campaign campaign, Donator donator, boolean deliver, float quantity) {
+        super(id, date, campaign, donator, deliver);
         this.quantity = quantity;
     }
 

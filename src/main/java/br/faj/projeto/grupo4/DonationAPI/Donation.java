@@ -13,12 +13,12 @@ import java.util.Date;
 
 public abstract class Donation {
 
-    long id;
-    Date date;
-    Campaign campaign;
-    Donator donator;
+    private long id;
+    private Date date;
+    private Campaign campaign;
+    private Donator donator;
 
-    public Donation(long id, Date date, Campaign campaign, Donator donator, DonationStatus status, boolean deliver) {
+    public Donation(long id, Date date, Campaign campaign, Donator donator, boolean deliver) {
         this.id = id;
         this.date = date;
         this.campaign = campaign;

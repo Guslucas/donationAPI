@@ -5,13 +5,18 @@ import java.util.Date;
 import java.util.List;
 
 public class ProductDonation extends Donation {
-    List<Item> items = new ArrayList<>();
-    boolean deliver;
 
-    public ProductDonation(long id, Date date, Campaign campaign, Donator donator, DonationStatus status, boolean deliver, List<Item> items, boolean deliver1) {
-        super(id, date, campaign, donator, status, deliver);
+    private List<Item> items = new ArrayList<>();
+
+    public ProductDonation(long id, Date date, Campaign campaign, Donator donator, boolean deliver, List<Item> items) {
+        super(id, date, campaign, donator, deliver);
         this.items = items;
-        this.deliver = deliver1;
+    }
+
+    public ProductDonation(){}
+
+    public ProductDonation(List<Item> items) {
+        this.items = items;
     }
 
     public List<Item> getItems() {

@@ -14,7 +14,7 @@ public class MessageController {
     MessageDAO dao;
 
     @PostMapping("/donator/{id}/message")
-    public Response getMessages(@PathVariable("id") int senderId){
+    public Response getMessages(@PathVariable("id") long senderId){
        try {
            return new Response(dao.getMessages(senderId));
        } catch (Exception ex){
@@ -23,11 +23,10 @@ public class MessageController {
     }
 
     @PostMapping("/donator/{id}/message/new")
-    public Response sendMessage(){
+    public Response sendMessage(@PathVariable ("id") long senderId, @RequestBody Message message){
         try {
-            Message message = new Message();
             System.out.println(message);
-            return new Response(dao.sendMessage(message));
+            return new Response(dao.sendMessage(message, senderId));
         }catch (Exception ex){
             ex.printStackTrace();
             return new Response(ex.getMessage());

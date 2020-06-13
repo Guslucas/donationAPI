@@ -15,11 +15,6 @@ public class CampaignController {
     @Autowired
     CampaignDAO dao;
 
-//    @GetMapping("/campaign")
-//    public List<Campaign> getCampaigns(){
-//        return dao.getCampaigns();
-//    }
-
     @GetMapping("/campaign")
     public Response getCampaigns(){
         try {

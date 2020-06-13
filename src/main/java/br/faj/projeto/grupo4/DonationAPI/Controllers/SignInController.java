@@ -18,7 +18,6 @@ public class SignInController {
     @PostMapping ("/signin")
     public Response postDonator (@RequestBody Donator donator){
         try {
-            System.out.println(donator.toString());
             return new Response (dao.cadastrar(donator));
         } catch (Exception ex) {
             ex.printStackTrace();

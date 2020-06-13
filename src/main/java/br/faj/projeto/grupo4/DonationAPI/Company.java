@@ -4,10 +4,10 @@ import java.util.Date;
 
 public class Company extends Donator {
 
-    String cnpj;
-    String tradingName;
-    String companyName;
-    Date foundationDate;
+    private String cnpj;
+    private String tradingName;
+    private String companyName;
+    private Date foundationDate;
 
     public Company(long id, String email, String password, String bio, Address address, String cnpj, String tradingName, String companyName, Date foundationDate) {
         super(id, email, password, bio, address);

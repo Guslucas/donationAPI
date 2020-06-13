@@ -13,11 +13,11 @@ import java.util.List;
 })
 
 public abstract class Donator {
-    long id;
-    String email;
-    String password;
-    String bio;
-    Address address;
+    private long id;
+    private String email;
+    private String password;
+    private String bio;
+    private Address address;
 
     public Donator(long id, String email, String password, String bio, Address address) {
         this.id = id;
