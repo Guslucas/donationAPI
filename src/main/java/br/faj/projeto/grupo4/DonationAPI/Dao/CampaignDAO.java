@@ -83,7 +83,7 @@ public class CampaignDAO {
                 String type =  rs.getString("TYPE");
                 Date startDate = rs.getDate("START");
                 Date endDate = rs.getDate("END");
-                float percentage = 0;
+                float percentage = rs.getLong("PERCENTAGE");
 
                 if (type.equals("M")){
                    // float goal = rs.getFloat("GOAL");
