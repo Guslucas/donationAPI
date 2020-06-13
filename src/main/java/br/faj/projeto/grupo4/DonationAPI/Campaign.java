@@ -1,5 +1,6 @@
 package br.faj.projeto.grupo4.DonationAPI;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 
@@ -12,19 +13,19 @@ import java.util.Date;
 })
 
 public abstract class Campaign {
-    long id;
-    String name;
-    String description;
-    String type;
-    java.sql.Date startDate;
-    java.sql.Date endDate;
-    float percentage;
+    private long id;
+    private String name;
+    private String description;
+    @JsonFormat (pattern = "yyyy-MM-dd hh:mm:ss")
+    private Date startDate;
+    @JsonFormat (pattern = "yyyy-MM-dd hh:mm:ss")
+    private Date endDate;
+    private float percentage;
 
-    public Campaign(long id, String name, String description, String type, java.sql.Date startDate, java.sql.Date endDate, float percentage) {
+    public Campaign(long id, String name, String description, Date startDate, Date endDate, float percentage) {
         this.id = id;
         this.name = name;
         this.description = description;
-        this.type = type;
         this.startDate = startDate;
         this.endDate = endDate;
         this.percentage = percentage;
@@ -45,9 +46,7 @@ public abstract class Campaign {
     public Date getEndDate() {
         return endDate;
     }
-    public String getType() {
-        return type;
-    }
+
     public float getPercentage() {
         return percentage;
     }

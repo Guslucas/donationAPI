@@ -14,45 +14,45 @@ public class CampaignDAO {
     @Autowired
     private JdbcTemplate jdbcTemplate;
 
-    public Campaign inserir(Campaign c) {
-        String type = c.getType();
-        if (type.equals("M")){
-            MoneyCampaign mc = (MoneyCampaign) c;
-            String sqlInsert = "INSERT INTO Campaign (ID, NAME, DESCRIPTION, STARTDATE, ENDDATE, GOAL)"
-                    + "VALUES (?, ?, ?, ?, ?, ?,)";
-            try (Connection connection = jdbcTemplate.getDataSource().getConnection()) {
-                PreparedStatement preparedStatement = connection.prepareStatement(sqlInsert);
-                preparedStatement.setLong(1, mc.getId());
-                preparedStatement.setString(2, mc.getName());
-                preparedStatement.setString(3, mc.getDescription());
-                preparedStatement.setDate(4, (Date) mc.getStartDate());
-                preparedStatement.setDate(5, (Date) mc.getEndDate());
-                int result = preparedStatement.executeUpdate();
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
-            return mc;
-        }
-        else if (type.equals("P")){
-            ProductCampaign pc = (ProductCampaign) c;
-            String sqlInsert = "INSERT INTO Campaign (ID, NAME, DESCRIPTION, STARTDATE, ENDDATE, OBJECTIVES)"
-                    + "VALUES (?, ?, ?, ?, ?, ?,)";
-            try (Connection connection = jdbcTemplate.getDataSource().getConnection()) {
-                PreparedStatement preparedStatement = connection.prepareStatement(sqlInsert);
-                preparedStatement.setLong(1, pc.getId());
-                preparedStatement.setString(2, pc.getName());
-                preparedStatement.setString(3, pc.getDescription());
-                preparedStatement.setDate(4, (Date) pc.getStartDate());
-                preparedStatement.setDate(5, (Date) pc.getEndDate());
-                preparedStatement.setArray(6, (null));
-                int result = preparedStatement.executeUpdate();
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
-            return pc;
-        }
-        return null;
-    }
+//    public Campaign inserir(Campaign c) {
+//        String type = c.getType();
+//        if (type.equals("M")){
+//            MoneyCampaign mc = (MoneyCampaign) c;
+//            String sqlInsert = "INSERT INTO Campaign (ID, NAME, DESCRIPTION, STARTDATE, ENDDATE, GOAL)"
+//                    + "VALUES (?, ?, ?, ?, ?, ?,)";
+//            try (Connection connection = jdbcTemplate.getDataSource().getConnection()) {
+//                PreparedStatement preparedStatement = connection.prepareStatement(sqlInsert);
+//                preparedStatement.setLong(1, mc.getId());
+//                preparedStatement.setString(2, mc.getName());
+//                preparedStatement.setString(3, mc.getDescription());
+//                preparedStatement.setDate(4, (Date) mc.getStartDate());
+//                preparedStatement.setDate(5, (Date) mc.getEndDate());
+//                int result = preparedStatement.executeUpdate();
+//            } catch (SQLException e) {
+//                e.printStackTrace();
+//            }
+//            return mc;
+//        }
+//        else if (type.equals("P")){
+//            ProductCampaign pc = (ProductCampaign) c;
+//            String sqlInsert = "INSERT INTO Campaign (ID, NAME, DESCRIPTION, STARTDATE, ENDDATE, OBJECTIVES)"
+//                    + "VALUES (?, ?, ?, ?, ?, ?,)";
+//            try (Connection connection = jdbcTemplate.getDataSource().getConnection()) {
+//                PreparedStatement preparedStatement = connection.prepareStatement(sqlInsert);
+//                preparedStatement.setLong(1, pc.getId());
+//                preparedStatement.setString(2, pc.getName());
+//                preparedStatement.setString(3, pc.getDescription());
+//                preparedStatement.setDate(4, (Date) pc.getStartDate());
+//                preparedStatement.setDate(5, (Date) pc.getEndDate());
+//                preparedStatement.setArray(6, (null));
+//                int result = preparedStatement.executeUpdate();
+//            } catch (SQLException e) {
+//                e.printStackTrace();
+//            }
+//            return pc;
+//        }
+//        return null;
+//    }
 
     public List<Campaign> getCampaigns() throws Exception {
         String query = "SELECT\n" +
@@ -87,10 +87,10 @@ public class CampaignDAO {
 
                 if (type.equals("M")){
                    // float goal = rs.getFloat("GOAL");
-                    MoneyCampaign mc = new MoneyCampaign(id, name, description, type, startDate, endDate, percentage);
+                    MoneyCampaign mc = new MoneyCampaign(id, name, description, startDate, endDate, percentage);
                     campaignList.add(mc);
                 } else if (type.equals("P")){
-                    ProductCampaign pc = new ProductCampaign(id, name, description, type, startDate, endDate, percentage);
+                    ProductCampaign pc = new ProductCampaign(id, name, description, startDate, endDate, percentage);
                     campaignList.add(pc);
                 }
             }
