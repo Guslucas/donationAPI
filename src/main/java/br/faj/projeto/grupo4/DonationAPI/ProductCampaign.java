@@ -9,7 +9,7 @@ import java.util.List;
 
 public class ProductCampaign extends Campaign {
 
-    public ProductCampaign(long id, String name, String description, String type, Date startDate, Date endDate, float percentage) {
-        super(id, name, description, type, startDate, endDate, percentage);
+    public ProductCampaign(long id, String name, String description, Date startDate, Date endDate, float percentage) {
+        super(id, name, description, startDate, endDate, percentage);
     }
 }
