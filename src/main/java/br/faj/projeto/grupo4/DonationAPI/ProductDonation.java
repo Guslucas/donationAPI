@@ -18,8 +18,4 @@ public class ProductDonation extends Donation {
         return items;
     }
 
-    @Override
-    public boolean isDeliver() {
-        return deliver;
-    }
 }

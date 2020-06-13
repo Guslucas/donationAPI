@@ -17,16 +17,23 @@ public abstract class Donation {
     Date date;
     Campaign campaign;
     Donator donator;
-    DonationStatus status;
-    boolean deliver;
 
     public Donation(long id, Date date, Campaign campaign, Donator donator, DonationStatus status, boolean deliver) {
         this.id = id;
         this.date = date;
         this.campaign = campaign;
         this.donator = donator;
-        this.status = status;
-        this.deliver = deliver;
+    }
+    public Donation(){}
+
+    @Override
+    public String toString() {
+        return "Donation{" +
+                "id=" + id +
+                ", date=" + date +
+                ", campaign=" + campaign +
+                ", donator=" + donator +
+                '}';
     }
 
     public long getId() {
@@ -40,11 +47,5 @@ public abstract class Donation {
     }
     public Donator getDonator() {
         return donator;
-    }
-    public DonationStatus getStatus() {
-        return status;
-    }
-    public boolean isDeliver() {
-        return deliver;
     }
 }

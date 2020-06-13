@@ -17,6 +17,7 @@ public class Message {
         this.sender = sender;
         this.receiver = receiver;
     }
+    public Message(){}
 
     public long getId() {
         return id;
@@ -32,5 +33,9 @@ public class Message {
     }
     public Donator getReceiver() {
         return receiver;
+    }
+
+    public void setId(long id) {
+        this.id = id;
     }
 }
