@@ -13,14 +13,14 @@ public class MessageController {
     @Autowired
     MessageDAO dao;
 
-    @PostMapping("/donator/{id}/message")
-    public Response getMessages(@PathVariable("id") long senderId){
-       try {
-           return new Response(dao.getMessages(senderId));
-       } catch (Exception ex){
-           return new Response(ex.getMessage());
-       }
-    }
+//    @PostMapping("/donator/{id}/message")
+//    public Response getMessages(@PathVariable("id") long senderId){
+//       try {
+//           return new Response(dao.getMessages(senderId));
+//       } catch (Exception ex){
+//           return new Response(ex.getMessage());
+//       }
+//    }
 
     @PostMapping("/donator/{id}/message/new")
     public Response sendMessage(@PathVariable ("id") long senderId, @RequestBody Message message){

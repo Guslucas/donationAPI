@@ -17,42 +17,46 @@ public class MessageDAO {
     @Autowired
     private JdbcTemplate jdbcTemplate;
 
-    public List<Message> getMessages(long senderId){
-        String messageQuery = "SELECT * FROM MESSAGE WHERE ID_SENDER = ?";
-
-        Message message = new Message();
-        List<Message> messageList = new ArrayList<>();
-
-        try (Connection connection = jdbcTemplate.getDataSource().getConnection()) {
-            PreparedStatement preparedStatement = connection.prepareStatement(messageQuery);
-            preparedStatement.setLong(1, senderId);
-            ResultSet rs = preparedStatement.executeQuery();
-
-            while (rs.next()) {
-                long messageId = rs.getLong("ID_MESSAGE");
-                //long sender = rs.getLong("ID_SENDER");
-                long receiverId = rs.getLong("ID_RECIPIENT");
-                Date date = rs.getDate("DATE");
-                String content = rs.getString("CONTENT");
-
-                message.setId(messageId);
-//                message.setSender(senderId);
-//                message.setReceiver(receiverId);
-                message.setDate(date);
-                message.setContent(content);
-            }
-            rs.close();
-            preparedStatement.close();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return messageList;
-    }
+//    public List<Message> getMessages(long senderId){
+//        String messageQuery = "SELECT * FROM MESSAGE WHERE ID_SENDER = ?";
+//
+//        Message message = new Message();
+//        List<Message> messageList = new ArrayList<>();
+//
+//        try (Connection connection = jdbcTemplate.getDataSource().getConnection()) {
+//            PreparedStatement preparedStatement = connection.prepareStatement(messageQuery);
+//            preparedStatement.setLong(1, senderId);
+//            ResultSet rs = preparedStatement.executeQuery();
+//
+//            while (rs.next()) {
+//                long messageId = rs.getLong("ID_MESSAGE");
+//                //long sender = rs.getLong("ID_SENDER");
+//                long receiverId = rs.getLong("ID_RECIPIENT");
+//                Date date = rs.getDate("DATE");
+//                String content = rs.getString("CONTENT");
+//
+//                message.setId(messageId);
+//                message.setSender();
+////                message.setReceiver(receiverId);
+//                message.setDate(date);
+//                message.setContent(content);
+//
+//                for (int i = 0; i < messageList.size(); i++) {
+//                    getMessages(messageList.get(i));
+//                }
+//            }
+//            rs.close();
+//            preparedStatement.close();
+//        } catch (SQLException e) {
+//            e.printStackTrace();
+//        }
+//        return messageList;
+//    }
 
     public Message sendMessage(Message message, long senderId) throws Exception {
-        String selectReceiver = "SELECT ID_DONATOR FROM DONATOR WHERE EMAIL = ?";
+        String selectReceiver = "SELECT * FROM DONATOR WHERE EMAIL = ?";
         String insertMessage = "INSERT INTO MESSAGE (ID_SENDER, ID_RECIPIENT, DATE, CONTENT)" +
-                        "VALUES (?, ?, ?, ?)";
+                "VALUES (?, ?, ?, ?)";
 
         PreparedStatement preparedStatement1 = null;
         PreparedStatement preparedStatement2 = null;
@@ -64,12 +68,11 @@ public class MessageDAO {
             ResultSet rs = preparedStatement1.executeQuery();
             while (rs.next()) {
                 long receiverId = rs.getLong("ID_DONATOR");
-                preparedStatement1.close();
 
                 preparedStatement2 = connection.prepareStatement(insertMessage, Statement.RETURN_GENERATED_KEYS);
                 preparedStatement2.setLong(1, senderId);
                 preparedStatement2.setLong(2, receiverId);
-                preparedStatement2.setDate(3, (java.sql.Date) new Date(message.getDate().getTime()));
+                preparedStatement2.setTimestamp(3, new Timestamp(message.getDate().getTime()));
                 preparedStatement2.setString(4, message.getContent());
 
                 int result = preparedStatement2.executeUpdate();
@@ -80,12 +83,13 @@ public class MessageDAO {
                     message.setId(messageId);
                     generatedKeys.close();
                 }
-                preparedStatement2.close();
             }
+            preparedStatement1.close();
+            preparedStatement2.close();
 
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
         return message;
     }
 }
