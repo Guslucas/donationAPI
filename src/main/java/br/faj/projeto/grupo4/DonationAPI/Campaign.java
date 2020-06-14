@@ -17,9 +17,7 @@ public abstract class Campaign {
     private long id;
     private String name;
     private String description;
-    @JsonFormat(pattern = "yyyy-MM-dd hh:mm:ss")
     private Date startDate;
-    @JsonFormat(pattern = "yyyy-MM-dd hh:mm:ss")
     private Date endDate;
     private float percentage;
     private String type;
