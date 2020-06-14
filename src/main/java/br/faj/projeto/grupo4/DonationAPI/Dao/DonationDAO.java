@@ -36,7 +36,7 @@ public class DonationDAO {
                 }
                 preparedStatement.setString(3, "M");
                 preparedStatement.setFloat(4, moneyDonation.getQuantity());
-                preparedStatement.setDate(5, new java.sql.Date(moneyDonation.getDate().getTime()));
+                preparedStatement.setTimestamp(5, new Timestamp(moneyDonation.getDate().getTime()));
             } else if (donation instanceof ProductDonation) {
                 preparedStatement = connection.prepareStatement(insertProductDonation, Statement.RETURN_GENERATED_KEYS);
                 ProductDonation productDonation = (ProductDonation) donation;
@@ -49,7 +49,7 @@ public class DonationDAO {
                     preparedStatement.setLong(2, productDonation.getCampaign().getId());
                 }
                 preparedStatement.setString(3, "P");
-                preparedStatement.setDate(4, new java.sql.Date(productDonation.getDate().getTime()));
+                preparedStatement.setTimestamp(4, new Timestamp(productDonation.getDate().getTime()));
             }
             int result = preparedStatement.executeUpdate();
 

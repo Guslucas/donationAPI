@@ -7,7 +7,7 @@ import java.util.List;
 public class MoneyCampaign extends Campaign {
 
     public MoneyCampaign(long id, String name, String description, Date startDate, Date endDate, float percentage) {
-        super(id, name, description, startDate, endDate, percentage);
+        super(id, name, description, startDate, endDate, percentage, "MoneyCampaign");
     }
 
 }

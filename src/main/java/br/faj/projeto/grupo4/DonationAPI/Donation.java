@@ -1,5 +1,6 @@
 package br.faj.projeto.grupo4.DonationAPI;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 

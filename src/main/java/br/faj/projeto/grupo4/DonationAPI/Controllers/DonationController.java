@@ -15,7 +15,7 @@ public class DonationController {
     @Autowired
     DonationDAO dao;
 
-    @PostMapping("/donation")
+    @PostMapping("/donate")
     public Response donation(@RequestBody Donation donation){
         try {
             if(donation instanceof ProductDonation){
