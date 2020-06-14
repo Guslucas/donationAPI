@@ -60,11 +60,11 @@ public class CampaignDAO {
                 "(SELECT COUNT(*) FROM DONATION D\n" +
                 "JOIN Item I ON I.ID_DONATION = D.ID_DONATION\n" +
                 "JOIN Product P ON P.ID_Product = I.ID_Product\n" +
-                "WHERE D.Type = 'P')/(SELECT SUM(O.Quantity) FROM\n" +
+                "WHERE D.Type = 'P' AND D.ID_CAMPAIGN = C.ID_CAMPAIGN)/(SELECT SUM(O.Quantity) FROM\n" +
                 "Campaign C1\n" +
                 "JOIN Objective O ON O.ID_Campaign = C1.ID_Campaign\n" +
                 "JOIN Product P ON P.ID_Product = O.ID_Product\n" +
-                "WHERE C1.Type='P') * 100 AS PERCENTAGE\n" +
+                "WHERE C1.Type='P' AND C1.ID_CAMPAIGN = C.ID_CAMPAIGN) * 100 AS PERCENTAGE\n" +
                 "FROM Campaign C WHERE C.Type = 'P' AND END >= SYSDATE\n" +
                 "UNION ALL\n" +
                 "SELECT C.*,\n" +
@@ -120,7 +120,7 @@ public class CampaignDAO {
                 String type = rs.getString("TYPE");
                 String name = rs.getString("NAME");
 
-                Product p = new Product(id, type, name);
+                Product p = new Product(productID, type, name);
                 productList.add(p);
             }
             rs.close();

@@ -12261,3 +12261,291 @@ Caused by: org.h2.jdbc.JdbcSQLInvalidAuthorizationSpecException: Wrong user name
 	at org.h2.message.DbException.getJdbcSQLException(DbException.java:461)
 	at org.h2.message.DbException.getJdbcSQLException(DbException.java:429)
 	... 55 more
+2020-06-14 13:12:07 jdbc[13]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "INSERT INTO OBJECTIVE (QUANTITY, ID_PRODUCT, ID_CAMPAIGN) VALUES (5, )[*]"; expected "DEFAULT, NOT, EXISTS, INTERSECTS, UNIQUE"; SQL statement:
+INSERT INTO OBJECTIVE (QUANTITY, ID_PRODUCT, ID_CAMPAIGN) VALUES (5, ) [42001-200]
+2020-06-14 14:03:46 jdbc[13]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "SELECT 
+                C.*, 
+,[*]SELECT COUNT(*) FROM DONATION D 
+                JOIN ITEM I ON I.ID_DONATION = D.ID_DONATION 
+                JOIN PRODUCT P ON P.ID_PRODUCT = I.ID_PRODUCT 
+                WHERE D.TYPE = 'P' AS OBJETIVO
+                (SELECT COUNT(*) FROM DONATION D 
+                JOIN ITEM I ON I.ID_DONATION = D.ID_DONATION 
+                JOIN PRODUCT P ON P.ID_PRODUCT = I.ID_PRODUCT 
+                WHERE D.TYPE = 'P')/(SELECT SUM(O.QUANTITY) FROM 
+                CAMPAIGN C1 
+                JOIN OBJECTIVE O ON O.ID_CAMPAIGN = C1.ID_CAMPAIGN
+                JOIN PRODUCT P ON P.ID_PRODUCT = O.ID_PRODUCT 
+                WHERE C1.TYPE='P') * 100 AS PERCENTAGE 
+                FROM CAMPAIGN C WHERE C.TYPE = 'P' AND END >= SYSDATE"; expected "*, NOT, EXISTS, INTERSECTS, UNIQUE"; SQL statement:
+SELECT 
+                C.*, 
+,SELECT COUNT(*) FROM DONATION D 
+                JOIN Item I ON I.ID_DONATION = D.ID_DONATION 
+                JOIN Product P ON P.ID_Product = I.ID_Product 
+                WHERE D.Type = 'P' AS OBJETIVO
+                (SELECT COUNT(*) FROM DONATION D 
+                JOIN Item I ON I.ID_DONATION = D.ID_DONATION 
+                JOIN Product P ON P.ID_Product = I.ID_Product 
+                WHERE D.Type = 'P')/(SELECT SUM(O.Quantity) FROM 
+                Campaign C1 
+                JOIN Objective O ON O.ID_Campaign = C1.ID_Campaign
+                JOIN Product P ON P.ID_Product = O.ID_Product 
+                WHERE C1.Type='P') * 100 AS PERCENTAGE 
+                FROM Campaign C WHERE C.Type = 'P' AND END >= SYSDATE [42001-200]
+2020-06-14 14:03:53 jdbc[13]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "SELECT 
+                C.*, 
+,[*](SELECT COUNT(*) FROM DONATION D 
+                JOIN ITEM I ON I.ID_DONATION = D.ID_DONATION 
+                JOIN PRODUCT P ON P.ID_PRODUCT = I.ID_PRODUCT 
+                WHERE D.TYPE = 'P') AS DOADO
+                (SELECT COUNT(*) FROM DONATION D 
+                JOIN ITEM I ON I.ID_DONATION = D.ID_DONATION 
+                JOIN PRODUCT P ON P.ID_PRODUCT = I.ID_PRODUCT 
+                WHERE D.TYPE = 'P')/(SELECT SUM(O.QUANTITY) FROM 
+                CAMPAIGN C1 
+                JOIN OBJECTIVE O ON O.ID_CAMPAIGN = C1.ID_CAMPAIGN
+                JOIN PRODUCT P ON P.ID_PRODUCT = O.ID_PRODUCT 
+                WHERE C1.TYPE='P') * 100 AS PERCENTAGE 
+                FROM CAMPAIGN C WHERE C.TYPE = 'P' AND END >= SYSDATE"; expected "*, NOT, EXISTS, INTERSECTS, UNIQUE"; SQL statement:
+SELECT 
+                C.*, 
+,(SELECT COUNT(*) FROM DONATION D 
+                JOIN Item I ON I.ID_DONATION = D.ID_DONATION 
+                JOIN Product P ON P.ID_Product = I.ID_Product 
+                WHERE D.Type = 'P') AS DOADO
+                (SELECT COUNT(*) FROM DONATION D 
+                JOIN Item I ON I.ID_DONATION = D.ID_DONATION 
+                JOIN Product P ON P.ID_Product = I.ID_Product 
+                WHERE D.Type = 'P')/(SELECT SUM(O.Quantity) FROM 
+                Campaign C1 
+                JOIN Objective O ON O.ID_Campaign = C1.ID_Campaign
+                JOIN Product P ON P.ID_Product = O.ID_Product 
+                WHERE C1.Type='P') * 100 AS PERCENTAGE 
+                FROM Campaign C WHERE C.Type = 'P' AND END >= SYSDATE [42001-200]
+2020-06-14 14:04:08 jdbc[13]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "C" not found; SQL statement:
+SELECT 
+                C.*, 
+(SELECT COUNT(*) FROM DONATION D 
+                JOIN Item I ON I.ID_DONATION = D.ID_DONATION 
+                JOIN Product P ON P.ID_Product = I.ID_Product 
+                WHERE D.Type = 'P') AS DOADO, [42102-200]
+2020-06-14 14:05:39 jdbc[13]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "(SELECT COUNT(*) FROM DONATION D 
+                JOIN ITEM I ON I.ID_DONATION = D.ID_DONATION 
+                JOIN PRODUCT P ON P.ID_PRODUCT = I.ID_PRODUCT 
+                WHERE D.TYPE = 'P')/[*](SELECT SUM(O.QUANTITY) FROM 
+                CAMPAIGN C1 
+                JOIN OBJECTIVE O ON O.ID_CAMPAIGN = C1.ID_CAMPAIGN
+                JOIN PRODUCT P ON P.ID_PRODUCT = O.ID_PRODUCT 
+                WHERE C1.TYPE='P') * 100 AS PERCENTAGE 
+                FROM CAMPAIGN C WHERE C.TYPE = 'P' AND END >= SYSDATE"; SQL statement:
+(SELECT COUNT(*) FROM DONATION D 
+                JOIN Item I ON I.ID_DONATION = D.ID_DONATION 
+                JOIN Product P ON P.ID_Product = I.ID_Product 
+                WHERE D.Type = 'P')/(SELECT SUM(O.Quantity) FROM 
+                Campaign C1 
+                JOIN Objective O ON O.ID_Campaign = C1.ID_Campaign
+                JOIN Product P ON P.ID_Product = O.ID_Product 
+                WHERE C1.Type='P') * 100 AS PERCENTAGE 
+                FROM Campaign C WHERE C.Type = 'P' AND END >= SYSDATE [42000-200]
+2020-06-14 14:06:36 jdbc[13]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "(SELECT COUNT(*) FROM DONATION D 
+                JOIN ITEM I ON I.ID_DONATION = D.ID_DONATION 
+                JOIN PRODUCT P ON P.ID_PRODUCT = I.ID_PRODUCT 
+                WHERE D.TYPE = 'P')/[*](SELECT SUM(O.QUANTITY) FROM 
+                CAMPAIGN C1 
+                JOIN OBJECTIVE O ON O.ID_CAMPAIGN = C1.ID_CAMPAIGN
+                JOIN PRODUCT P ON P.ID_PRODUCT = O.ID_PRODUCT 
+                WHERE C1.TYPE='P') * 100 AS PERCENTAGE 
+                FROM CAMPAIGN C WHERE C.TYPE = 'P' AND END >= SYSDATE"; SQL statement:
+(SELECT COUNT(*) FROM DONATION D 
+                JOIN Item I ON I.ID_DONATION = D.ID_DONATION 
+                JOIN Product P ON P.ID_Product = I.ID_Product 
+                WHERE D.Type = 'P')/(SELECT SUM(O.Quantity) FROM 
+                Campaign C1 
+                JOIN Objective O ON O.ID_Campaign = C1.ID_Campaign
+                JOIN Product P ON P.ID_Product = O.ID_Product 
+                WHERE C1.Type='P') * 100 AS PERCENTAGE 
+                FROM Campaign C WHERE C.Type = 'P' AND END >= SYSDATE [42000-200]
+2020-06-14 14:06:39 jdbc[13]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "SELECT 
+                C.*, 
+				
+				(SELECT COUNT(*) FROM DONATION D 
+					JOIN ITEM I ON I.ID_DONATION = D.ID_DONATION 
+					JOIN PRODUCT P ON P.ID_PRODUCT = I.ID_PRODUCT 
+					WHERE D.TYPE = 'P' AND D.ID_CAMPAIGN = C.ID_CAMPAIGN) AS DOADO,
+					
+					(SELECT SUM(O.QUANTITY) FROM 
+                CAMPAIGN C1 
+                JOIN OBJECTIVE O ON O.ID_CAMPAIGN = C1.ID_CAMPAIGN
+                JOIN PRODUCT P ON P.ID_PRODUCT = O.ID_PRODUCT 
+                WHERE C1.TYPE='P' WHERE[*] C1.ID_CAMPAIGN = C.ID_CAMPAIGN) AS OBJ,
+                (SELECT COUNT(*) FROM DONATION D 
+                JOIN ITEM I ON I.ID_DONATION = D.ID_DONATION 
+                JOIN PRODUCT P ON P.ID_PRODUCT = I.ID_PRODUCT 
+                WHERE D.TYPE = 'P')/(SELECT SUM(O.QUANTITY) FROM 
+                CAMPAIGN C1 
+                JOIN OBJECTIVE O ON O.ID_CAMPAIGN = C1.ID_CAMPAIGN
+                JOIN PRODUCT P ON P.ID_PRODUCT = O.ID_PRODUCT 
+                WHERE C1.TYPE='P') * 100 AS PERCENTAGE 
+                FROM CAMPAIGN C WHERE C.TYPE = 'P' AND END >= SYSDATE"; expected "[, ::, AT, FORMAT, *, /, %, +, -, ||, ~, !~, NOT, LIKE, ILIKE, REGEXP, IS, IN, BETWEEN, AND, _LOCAL_AND_GLOBAL_, OR, GROUP, HAVING, WINDOW, QUALIFY, UNION, EXCEPT, MINUS, INTERSECT, ORDER, OFFSET, FETCH, LIMIT, SAMPLE_SIZE, FOR, [, ::, AT, FORMAT, *, /, %, +, -, ||, ~, !~, NOT, LIKE, ILIKE, REGEXP, IS, IN, BETWEEN, AND, OR, ,, )"; SQL statement:
+SELECT 
+                C.*, 
+				
+				(SELECT COUNT(*) FROM DONATION D 
+					JOIN Item I ON I.ID_DONATION = D.ID_DONATION 
+					JOIN Product P ON P.ID_Product = I.ID_Product 
+					WHERE D.Type = 'P' AND D.ID_CAMPAIGN = C.ID_CAMPAIGN) AS DOADO,
+					
+					(SELECT SUM(O.Quantity) FROM 
+                Campaign C1 
+                JOIN Objective O ON O.ID_Campaign = C1.ID_Campaign
+                JOIN Product P ON P.ID_Product = O.ID_Product 
+                WHERE C1.Type='P' WHERE C1.ID_CAMPAIGN = C.ID_CAMPAIGN) AS OBJ,
+                (SELECT COUNT(*) FROM DONATION D 
+                JOIN Item I ON I.ID_DONATION = D.ID_DONATION 
+                JOIN Product P ON P.ID_Product = I.ID_Product 
+                WHERE D.Type = 'P')/(SELECT SUM(O.Quantity) FROM 
+                Campaign C1 
+                JOIN Objective O ON O.ID_Campaign = C1.ID_Campaign
+                JOIN Product P ON P.ID_Product = O.ID_Product 
+                WHERE C1.Type='P') * 100 AS PERCENTAGE 
+                FROM Campaign C WHERE C.Type = 'P' AND END >= SYSDATE [42001-200]
+2020-06-14 14:07:01 jdbc[13]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "SELECT 
+                C.*, 
+				(SELECT COUNT(*) FROM DONATION D 
+					JOIN ITEM I ON I.ID_DONATION = D.ID_DONATION 
+					JOIN PRODUCT P ON P.ID_PRODUCT = I.ID_PRODUCT 
+					WHERE D.TYPE = 'P' AND D.ID_CAMPAIGN = C.ID_CAMPAIGN) AS DOADO,
+					
+					(SELECT SUM(O.QUANTITY) FROM 
+                CAMPAIGN C1 
+                JOIN OBJECTIVE O ON O.ID_CAMPAIGN = C1.ID_CAMPAIGN
+                JOIN PRODUCT P ON P.ID_PRODUCT = O.ID_PRODUCT 
+                WHERE C1.TYPE='P' WHERE[*] C1.ID_CAMPAIGN = C.ID_CAMPAIGN) AS OBJ,
+                (SELECT COUNT(*) FROM DONATION D 
+                JOIN ITEM I ON I.ID_DONATION = D.ID_DONATION 
+                JOIN PRODUCT P ON P.ID_PRODUCT = I.ID_PRODUCT 
+                WHERE D.TYPE = 'P')/(SELECT SUM(O.QUANTITY) FROM 
+                CAMPAIGN C1 
+                JOIN OBJECTIVE O ON O.ID_CAMPAIGN = C1.ID_CAMPAIGN
+                JOIN PRODUCT P ON P.ID_PRODUCT = O.ID_PRODUCT 
+                WHERE C1.TYPE='P') * 100 AS PERCENTAGE 
+                FROM CAMPAIGN C WHERE C.TYPE = 'P' AND END >= SYSDATE"; expected "[, ::, AT, FORMAT, *, /, %, +, -, ||, ~, !~, NOT, LIKE, ILIKE, REGEXP, IS, IN, BETWEEN, AND, _LOCAL_AND_GLOBAL_, OR, GROUP, HAVING, WINDOW, QUALIFY, UNION, EXCEPT, MINUS, INTERSECT, ORDER, OFFSET, FETCH, LIMIT, SAMPLE_SIZE, FOR, [, ::, AT, FORMAT, *, /, %, +, -, ||, ~, !~, NOT, LIKE, ILIKE, REGEXP, IS, IN, BETWEEN, AND, OR, ,, )"; SQL statement:
+SELECT 
+                C.*, 
+				(SELECT COUNT(*) FROM DONATION D 
+					JOIN Item I ON I.ID_DONATION = D.ID_DONATION 
+					JOIN Product P ON P.ID_Product = I.ID_Product 
+					WHERE D.Type = 'P' AND D.ID_CAMPAIGN = C.ID_CAMPAIGN) AS DOADO,
+					
+					(SELECT SUM(O.Quantity) FROM 
+                Campaign C1 
+                JOIN Objective O ON O.ID_Campaign = C1.ID_Campaign
+                JOIN Product P ON P.ID_Product = O.ID_Product 
+                WHERE C1.Type='P' WHERE C1.ID_CAMPAIGN = C.ID_CAMPAIGN) AS OBJ,
+                (SELECT COUNT(*) FROM DONATION D 
+                JOIN Item I ON I.ID_DONATION = D.ID_DONATION 
+                JOIN Product P ON P.ID_Product = I.ID_Product 
+                WHERE D.Type = 'P')/(SELECT SUM(O.Quantity) FROM 
+                Campaign C1 
+                JOIN Objective O ON O.ID_Campaign = C1.ID_Campaign
+                JOIN Product P ON P.ID_Product = O.ID_Product 
+                WHERE C1.Type='P') * 100 AS PERCENTAGE 
+                FROM Campaign C WHERE C.Type = 'P' AND END >= SYSDATE [42001-200]
+2020-06-14 14:07:09 jdbc[13]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "SELECT 
+                C.*, 
+				(SELECT COUNT(*) FROM DONATION D 
+					JOIN ITEM I ON I.ID_DONATION = D.ID_DONATION 
+					JOIN PRODUCT P ON P.ID_PRODUCT = I.ID_PRODUCT 
+					WHERE D.TYPE = 'P' AND D.ID_CAMPAIGN = C.ID_CAMPAIGN) AS DOADO,
+					(SELECT SUM(O.QUANTITY) FROM 
+                CAMPAIGN C1 
+                JOIN OBJECTIVE O ON O.ID_CAMPAIGN = C1.ID_CAMPAIGN
+                JOIN PRODUCT P ON P.ID_PRODUCT = O.ID_PRODUCT 
+                WHERE C1.TYPE='P' WHERE[*] C1.ID_CAMPAIGN = C.ID_CAMPAIGN) AS OBJ,
+                (SELECT COUNT(*) FROM DONATION D 
+                JOIN ITEM I ON I.ID_DONATION = D.ID_DONATION 
+                JOIN PRODUCT P ON P.ID_PRODUCT = I.ID_PRODUCT 
+                WHERE D.TYPE = 'P')/(SELECT SUM(O.QUANTITY) FROM 
+                CAMPAIGN C1 
+                JOIN OBJECTIVE O ON O.ID_CAMPAIGN = C1.ID_CAMPAIGN
+                JOIN PRODUCT P ON P.ID_PRODUCT = O.ID_PRODUCT 
+                WHERE C1.TYPE='P') * 100 AS PERCENTAGE 
+                FROM CAMPAIGN C WHERE C.TYPE = 'P' AND END >= SYSDATE"; expected "[, ::, AT, FORMAT, *, /, %, +, -, ||, ~, !~, NOT, LIKE, ILIKE, REGEXP, IS, IN, BETWEEN, AND, _LOCAL_AND_GLOBAL_, OR, GROUP, HAVING, WINDOW, QUALIFY, UNION, EXCEPT, MINUS, INTERSECT, ORDER, OFFSET, FETCH, LIMIT, SAMPLE_SIZE, FOR, [, ::, AT, FORMAT, *, /, %, +, -, ||, ~, !~, NOT, LIKE, ILIKE, REGEXP, IS, IN, BETWEEN, AND, OR, ,, )"; SQL statement:
+SELECT 
+                C.*, 
+				(SELECT COUNT(*) FROM DONATION D 
+					JOIN Item I ON I.ID_DONATION = D.ID_DONATION 
+					JOIN Product P ON P.ID_Product = I.ID_Product 
+					WHERE D.Type = 'P' AND D.ID_CAMPAIGN = C.ID_CAMPAIGN) AS DOADO,
+					(SELECT SUM(O.Quantity) FROM 
+                Campaign C1 
+                JOIN Objective O ON O.ID_Campaign = C1.ID_Campaign
+                JOIN Product P ON P.ID_Product = O.ID_Product 
+                WHERE C1.Type='P' WHERE C1.ID_CAMPAIGN = C.ID_CAMPAIGN) AS OBJ,
+                (SELECT COUNT(*) FROM DONATION D 
+                JOIN Item I ON I.ID_DONATION = D.ID_DONATION 
+                JOIN Product P ON P.ID_Product = I.ID_Product 
+                WHERE D.Type = 'P')/(SELECT SUM(O.Quantity) FROM 
+                Campaign C1 
+                JOIN Objective O ON O.ID_Campaign = C1.ID_Campaign
+                JOIN Product P ON P.ID_Product = O.ID_Product 
+                WHERE C1.Type='P') * 100 AS PERCENTAGE 
+                FROM Campaign C WHERE C.Type = 'P' AND END >= SYSDATE [42001-200]
+2020-06-14 14:07:21 jdbc[13]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "SELECT 
+                C.*, 
+				(SELECT COUNT(*) FROM DONATION D 
+					JOIN ITEM I ON I.ID_DONATION = D.ID_DONATION 
+					JOIN PRODUCT P ON P.ID_PRODUCT = I.ID_PRODUCT 
+					WHERE D.TYPE = 'P' AND D.ID_CAMPAIGN = C.ID_CAMPAIGN) AS DOADO,
+					(SELECT SUM(O.QUANTITY) FROM 
+                CAMPAIGN C1 
+                JOIN OBJECTIVE O ON O.ID_CAMPAIGN = C1.ID_CAMPAIGN
+                JOIN PRODUCT P ON P.ID_PRODUCT = O.ID_PRODUCT 
+                WHERE C1.TYPE='P' WHERE[*] C1.ID_CAMPAIGN = C.ID_CAMPAIGN) AS OBJ"; expected "[, ::, AT, FORMAT, *, /, %, +, -, ||, ~, !~, NOT, LIKE, ILIKE, REGEXP, IS, IN, BETWEEN, AND, _LOCAL_AND_GLOBAL_, OR, GROUP, HAVING, WINDOW, QUALIFY, UNION, EXCEPT, MINUS, INTERSECT, ORDER, OFFSET, FETCH, LIMIT, SAMPLE_SIZE, FOR, [, ::, AT, FORMAT, *, /, %, +, -, ||, ~, !~, NOT, LIKE, ILIKE, REGEXP, IS, IN, BETWEEN, AND, OR, ,, )"; SQL statement:
+SELECT 
+                C.*, 
+				(SELECT COUNT(*) FROM DONATION D 
+					JOIN Item I ON I.ID_DONATION = D.ID_DONATION 
+					JOIN Product P ON P.ID_Product = I.ID_Product 
+					WHERE D.Type = 'P' AND D.ID_CAMPAIGN = C.ID_CAMPAIGN) AS DOADO,
+					(SELECT SUM(O.Quantity) FROM 
+                Campaign C1 
+                JOIN Objective O ON O.ID_Campaign = C1.ID_Campaign
+                JOIN Product P ON P.ID_Product = O.ID_Product 
+                WHERE C1.Type='P' WHERE C1.ID_CAMPAIGN = C.ID_CAMPAIGN) AS OBJ [42001-200]
+2020-06-14 14:07:23 jdbc[13]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "SELECT 
+                C.*, 
+				(SELECT COUNT(*) FROM DONATION D 
+					JOIN ITEM I ON I.ID_DONATION = D.ID_DONATION 
+					JOIN PRODUCT P ON P.ID_PRODUCT = I.ID_PRODUCT 
+					WHERE D.TYPE = 'P' AND D.ID_CAMPAIGN = C.ID_CAMPAIGN) AS DOADO,
+					(SELECT SUM(O.QUANTITY) FROM 
+                CAMPAIGN C1 
+                JOIN OBJECTIVE O ON O.ID_CAMPAIGN = C1.ID_CAMPAIGN
+                JOIN PRODUCT P ON P.ID_PRODUCT = O.ID_PRODUCT 
+                WHERE C1.TYPE='P' WHERE[*] C1.ID_CAMPAIGN = C.ID_CAMPAIGN) AS OBJ
+                FROM CAMPAIGN C WHERE C.TYPE = 'P' AND END >= SYSDATE"; expected "[, ::, AT, FORMAT, *, /, %, +, -, ||, ~, !~, NOT, LIKE, ILIKE, REGEXP, IS, IN, BETWEEN, AND, _LOCAL_AND_GLOBAL_, OR, GROUP, HAVING, WINDOW, QUALIFY, UNION, EXCEPT, MINUS, INTERSECT, ORDER, OFFSET, FETCH, LIMIT, SAMPLE_SIZE, FOR, [, ::, AT, FORMAT, *, /, %, +, -, ||, ~, !~, NOT, LIKE, ILIKE, REGEXP, IS, IN, BETWEEN, AND, OR, ,, )"; SQL statement:
+SELECT 
+                C.*, 
+				(SELECT COUNT(*) FROM DONATION D 
+					JOIN Item I ON I.ID_DONATION = D.ID_DONATION 
+					JOIN Product P ON P.ID_Product = I.ID_Product 
+					WHERE D.Type = 'P' AND D.ID_CAMPAIGN = C.ID_CAMPAIGN) AS DOADO,
+					(SELECT SUM(O.Quantity) FROM 
+                Campaign C1 
+                JOIN Objective O ON O.ID_Campaign = C1.ID_Campaign
+                JOIN Product P ON P.ID_Product = O.ID_Product 
+                WHERE C1.Type='P' WHERE C1.ID_CAMPAIGN = C.ID_CAMPAIGN) AS OBJ
+                FROM Campaign C WHERE C.Type = 'P' AND END >= SYSDATE [42001-200]
