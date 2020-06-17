@@ -2,6 +2,7 @@ package br.faj.projeto.grupo4.DonationAPI.Dao;
 
 import br.faj.projeto.grupo4.DonationAPI.Donator;
 import br.faj.projeto.grupo4.DonationAPI.Message;
+import br.faj.projeto.grupo4.DonationAPI.Person;
 import br.faj.projeto.grupo4.DonationAPI.Product;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -17,41 +18,54 @@ public class MessageDAO {
     @Autowired
     private JdbcTemplate jdbcTemplate;
 
-//    public List<Message> getMessages(long senderId){
-//        String messageQuery = "SELECT * FROM MESSAGE WHERE ID_SENDER = ?";
-//
-//        Message message = new Message();
-//        List<Message> messageList = new ArrayList<>();
-//
-//        try (Connection connection = jdbcTemplate.getDataSource().getConnection()) {
-//            PreparedStatement preparedStatement = connection.prepareStatement(messageQuery);
-//            preparedStatement.setLong(1, senderId);
-//            ResultSet rs = preparedStatement.executeQuery();
-//
-//            while (rs.next()) {
-//                long messageId = rs.getLong("ID_MESSAGE");
-//                //long sender = rs.getLong("ID_SENDER");
-//                long receiverId = rs.getLong("ID_RECIPIENT");
-//                Date date = rs.getDate("DATE");
-//                String content = rs.getString("CONTENT");
-//
-//                message.setId(messageId);
-//                message.setSender();
-////                message.setReceiver(receiverId);
-//                message.setDate(date);
-//                message.setContent(content);
-//
-//                for (int i = 0; i < messageList.size(); i++) {
-//                    getMessages(messageList.get(i));
-//                }
-//            }
-//            rs.close();
-//            preparedStatement.close();
-//        } catch (SQLException e) {
-//            e.printStackTrace();
-//        }
-//        return messageList;
-//    }
+    public List<Message> getMessages(long senderId, Donator receiver) {
+        String selectReceiver = "SELECT * FROM DONATOR WHERE EMAIL = ?";
+        String messageQuery = "SELECT * FROM MESSAGE " +
+                "WHERE (ID_SENDER = ? AND ID_RECIPIENT = ?) " +
+                "OR (ID_SENDER = ? AND ID_RECIPIENT = ?)" +
+                "ORDER BY DATE";
+
+        List<Message> messageList = new ArrayList<>();
+
+        PreparedStatement preparedStatement1 = null;
+        PreparedStatement preparedStatement2 = null;
+
+        try (Connection connection = jdbcTemplate.getDataSource().getConnection()) {
+            preparedStatement1 = connection.prepareStatement(selectReceiver);
+            preparedStatement1.setString(1, receiver.getEmail());
+            ResultSet rs1 = preparedStatement1.executeQuery();
+
+            while (rs1.next()) {
+                long receiverId = rs1.getLong("ID_DONATOR");
+
+                preparedStatement2 = connection.prepareStatement(messageQuery, Statement.RETURN_GENERATED_KEYS);
+                preparedStatement2.setLong(1, senderId);
+                preparedStatement2.setLong(2, receiverId);
+                preparedStatement2.setLong(3, receiverId);
+                preparedStatement2.setLong(4, senderId);
+
+                ResultSet rs2 = preparedStatement2.executeQuery();
+
+                while (rs2.next()) {
+                    long messageId = rs2.getLong("ID_MESSAGE");
+                    Date date = rs2.getTimestamp("DATE");
+                    String content = rs2.getString("CONTENT");
+                    long messageSenderId = rs2.getLong("ID_SENDER");
+                    long messageReceiverId = rs2.getLong("ID_RECIPIENT");
+
+                    Message message = new Message(messageId, content, date, (new Person(messageSenderId)), (new Person(messageReceiverId)));
+
+                    messageList.add(message);
+                }
+                rs2.close();
+            }
+            rs1.close();
+            preparedStatement1.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return messageList;
+    }
 
     public Message sendMessage(Message message, long senderId) throws Exception {
         String selectReceiver = "SELECT * FROM DONATOR WHERE EMAIL = ?";
@@ -83,6 +97,7 @@ public class MessageDAO {
                     message.setId(messageId);
                     generatedKeys.close();
                 }
+                rs.close();
             }
             preparedStatement1.close();
             preparedStatement2.close();

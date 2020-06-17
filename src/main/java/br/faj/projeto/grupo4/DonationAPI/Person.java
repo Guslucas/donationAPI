@@ -16,6 +16,12 @@ public class Person extends Donator {
         this.surname = surname;
         this.birthDate = birthDate;
     }
+    public Person(long id){
+        super(id);
+    }
+    public Person(){
+        super();
+    }
 
     public String getCpf() {
         return cpf;

@@ -26,6 +26,10 @@ public abstract class Donator {
         this.bio = bio;
         this.address = address;
     }
+    public Donator(long id) {
+        this.id = id;
+    }
+    public Donator() { }
 
     public long getId() {
         return id;
