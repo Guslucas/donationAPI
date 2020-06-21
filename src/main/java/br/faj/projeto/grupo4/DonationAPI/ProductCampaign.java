@@ -9,7 +9,13 @@ import java.util.List;
 
 public class ProductCampaign extends Campaign {
 
+    List<Objective> objectives;
+
     public ProductCampaign(long id, String name, String description, Date startDate, Date endDate, float percentage) {
         super(id, name, description, startDate, endDate, percentage, "ProductCampaign");
+    }
+
+    public List<Objective> getObjectives() {
+        return objectives;
     }
 }

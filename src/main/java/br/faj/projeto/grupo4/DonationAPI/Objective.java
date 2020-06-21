@@ -10,11 +10,15 @@ public class Objective {
         this.id = id;
         this.quantity = quantity;
     }
+    public Objective(){}
 
     public long getId() {
         return id;
     }
     public int getQuantity() {
         return quantity;
+    }
+    public Product getProduct() {
+        return product;
     }
 }

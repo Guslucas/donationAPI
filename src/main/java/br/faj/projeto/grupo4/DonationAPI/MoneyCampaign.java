@@ -6,8 +6,13 @@ import java.util.List;
 
 public class MoneyCampaign extends Campaign {
 
+    private float goal;
+
     public MoneyCampaign(long id, String name, String description, Date startDate, Date endDate, float percentage) {
         super(id, name, description, startDate, endDate, percentage, "MoneyCampaign");
     }
 
+    public float getGoal() {
+        return goal;
+    }
 }

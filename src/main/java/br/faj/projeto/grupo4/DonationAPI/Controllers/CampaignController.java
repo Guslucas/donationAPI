@@ -34,4 +34,14 @@ public class CampaignController {
             return new Response(ex.getMessage());
         }
     }
+
+    @PostMapping("/campaign")
+    public Response addCampaign(@RequestBody Campaign c){
+        try{
+            return new Response(dao.inserirCampanha(c));
+        } catch (Exception ex){
+            ex.printStackTrace();
+            return new Response(ex.getMessage());
+        }
+    }
 }

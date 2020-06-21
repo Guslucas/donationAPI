@@ -4,6 +4,7 @@ import br.faj.projeto.grupo4.DonationAPI.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
+
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -14,45 +15,61 @@ public class CampaignDAO {
     @Autowired
     private JdbcTemplate jdbcTemplate;
 
-//    public Campaign inserir(Campaign c) {
-//        String type = c.getType();
-//        if (type.equals("M")){
-//            MoneyCampaign mc = (MoneyCampaign) c;
-//            String sqlInsert = "INSERT INTO Campaign (ID, NAME, DESCRIPTION, STARTDATE, ENDDATE, GOAL)"
-//                    + "VALUES (?, ?, ?, ?, ?, ?,)";
-//            try (Connection connection = jdbcTemplate.getDataSource().getConnection()) {
-//                PreparedStatement preparedStatement = connection.prepareStatement(sqlInsert);
-//                preparedStatement.setLong(1, mc.getId());
-//                preparedStatement.setString(2, mc.getName());
-//                preparedStatement.setString(3, mc.getDescription());
-//                preparedStatement.setDate(4, (Date) mc.getStartDate());
-//                preparedStatement.setDate(5, (Date) mc.getEndDate());
-//                int result = preparedStatement.executeUpdate();
-//            } catch (SQLException e) {
-//                e.printStackTrace();
-//            }
-//            return mc;
-//        }
-//        else if (type.equals("P")){
-//            ProductCampaign pc = (ProductCampaign) c;
-//            String sqlInsert = "INSERT INTO Campaign (ID, NAME, DESCRIPTION, STARTDATE, ENDDATE, OBJECTIVES)"
-//                    + "VALUES (?, ?, ?, ?, ?, ?,)";
-//            try (Connection connection = jdbcTemplate.getDataSource().getConnection()) {
-//                PreparedStatement preparedStatement = connection.prepareStatement(sqlInsert);
-//                preparedStatement.setLong(1, pc.getId());
-//                preparedStatement.setString(2, pc.getName());
-//                preparedStatement.setString(3, pc.getDescription());
-//                preparedStatement.setDate(4, (Date) pc.getStartDate());
-//                preparedStatement.setDate(5, (Date) pc.getEndDate());
-//                preparedStatement.setArray(6, (null));
-//                int result = preparedStatement.executeUpdate();
-//            } catch (SQLException e) {
-//                e.printStackTrace();
-//            }
-//            return pc;
-//        }
-//        return null;
-//    }
+    public Campaign inserirCampanha(Campaign c) throws Exception {
+        String type = c.getType();
+        String sqlInsert = "INSERT INTO Campaign (NAME, DESCRIPTION, START, END, TYPE, MONETARY_GOAL)"
+                + "VALUES (?, ?, ?, ?, ?, ?)";
+
+        PreparedStatement preparedStatement = null;
+
+        try (Connection connection = jdbcTemplate.getDataSource().getConnection()) {
+            preparedStatement = connection.prepareStatement(sqlInsert, Statement.RETURN_GENERATED_KEYS);
+
+            preparedStatement.setString(1, c.getName());
+            preparedStatement.setString(2, c.getDescription());
+            preparedStatement.setDate(3, (Date) c.getStartDate());
+            preparedStatement.setDate(4, (Date) c.getEndDate());
+            preparedStatement.setString(5, String.valueOf(c.getType().charAt(0)));
+            if (c instanceof MoneyCampaign) {
+                preparedStatement.setFloat(6, ((MoneyCampaign) c).getGoal());
+            }
+            else {
+                preparedStatement.setNull(6, Types.NUMERIC);
+            }
+            int result = preparedStatement.executeUpdate();
+
+            if (result == 1) {
+                ResultSet generatedKeys = preparedStatement.getGeneratedKeys();
+                generatedKeys.next();
+                long id = generatedKeys.getLong(1);
+                c.setId(id);
+                generatedKeys.close();
+
+                if (c instanceof ProductCampaign){
+                    List<Objective> objectiveList = ((ProductCampaign) c).getObjectives();
+
+                    for (Objective o : objectiveList) {
+                        String insertObjective = "INSERT INTO OBJECTIVE (QUANTITY, ID_PRODUCT, ID_CAMPAIGN)" +
+                                "VALUES (?, ?, ?)";
+
+                        PreparedStatement preparedStatement1 = null;
+
+                        try (Connection connection1 = jdbcTemplate.getDataSource().getConnection()) {
+                            preparedStatement1 = connection.prepareStatement(insertObjective, Statement.RETURN_GENERATED_KEYS);
+
+                            preparedStatement1.setInt(1, o.getQuantity());
+                            preparedStatement1.setLong(2, o.getProduct().getId());
+                            preparedStatement1.setLong(3, c.getId());
+
+                            int result1 = preparedStatement1.executeUpdate();
+                        }
+                    }
+                }
+                return c;
+            }
+        }
+        throw new Exception("Erro");
+    }
 
     public List<Campaign> getCampaigns() throws Exception {
         String query = "SELECT\n" +
@@ -80,16 +97,15 @@ public class CampaignDAO {
                 long id = rs.getLong("ID_CAMPAIGN");
                 String name = rs.getString("NAME");
                 String description = rs.getString("DESCRIPTION");
-                String type =  rs.getString("TYPE");
+                String type = rs.getString("TYPE");
                 Date startDate = rs.getDate("START");
                 Date endDate = rs.getDate("END");
                 float percentage = rs.getLong("PERCENTAGE");
 
-                if (type.equals("M")){
-                   // float goal = rs.getFloat("GOAL");
+                if (type.equals("M")) {
                     MoneyCampaign mc = new MoneyCampaign(id, name, description, startDate, endDate, percentage);
                     campaignList.add(mc);
-                } else if (type.equals("P")){
+                } else if (type.equals("P")) {
                     ProductCampaign pc = new ProductCampaign(id, name, description, startDate, endDate, percentage);
                     campaignList.add(pc);
                 }
@@ -103,7 +119,7 @@ public class CampaignDAO {
         return campaignList;
     }
 
-    public List<Product> getProductFromCampaign(int id) throws Exception{
+    public List<Product> getProductFromCampaign(int id) throws Exception {
         List<Product> productList = new ArrayList<>();
         String query = "SELECT P.* FROM\n" +
                 "CAMPAIGN C\n" +

@@ -12,6 +12,7 @@ import java.util.Date;
         @JsonSubTypes.Type(value = ProductCampaign.class),
         @JsonSubTypes.Type(value = MoneyCampaign.class)
 })
+
 @JsonInclude(JsonInclude.Include.ALWAYS)
 public abstract class Campaign {
     private long id;
@@ -31,6 +32,7 @@ public abstract class Campaign {
         this.percentage = percentage;
         this.type = type;
     }
+    public Campaign(){}
 
     public long getId() {
         return id;
@@ -58,5 +60,9 @@ public abstract class Campaign {
 
     public float getPercentage() {
         return percentage;
+    }
+
+    public void setId(long id) {
+        this.id = id;
     }
 }
