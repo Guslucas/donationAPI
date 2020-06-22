@@ -72,7 +72,8 @@ public class CampaignDAO {
     }
 
     public List<Campaign> getCampaigns() throws Exception {
-        String query = "SELECT\n" +
+        String query = "SELECT * FROM (\n"+
+                "SELECT\n" +
                 "C.*,\n" +
                 "(SELECT COUNT(*) FROM DONATION D\n" +
                 "JOIN Item I ON I.ID_DONATION = D.ID_DONATION\n" +
@@ -86,7 +87,8 @@ public class CampaignDAO {
                 "UNION ALL\n" +
                 "SELECT C.*,\n" +
                 "(SELECT NVL((SUM(D.Monetary_Value)/ C.Monetary_Goal) * 100, 0) FROM Donation D WHERE D.TYPE='M' AND D.ID_Campaign = C.ID_Campaign) AS PERCENTAGE\n" +
-                "FROM Campaign C WHERE C.Type='M' AND END >= SYSDATE";
+                "FROM Campaign C WHERE C.Type='M' AND END >= SYSDATE" +
+                ") ORDER BY END";
 
         List<Campaign> campaignList = new ArrayList<>();
 
