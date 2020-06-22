@@ -20,7 +20,8 @@ public class HistoryDAO {
     public List<HistoryItem> getHistory(long id) throws Exception{
         String query = "SELECT D2.DATE, D2.TYPE FROM DONATION D2\n" +
                 "JOIN DONATOR D ON D.ID_DONATOR = D2.ID_DONATOR\n" +
-                "WHERE D.ID_DONATOR = ?";
+                "WHERE D.ID_DONATOR = ?" +
+                "ORDER BY D2.DATE DESC";
 
         List<HistoryItem> historyList = new ArrayList<>();
         PreparedStatement preparedStatement = null;
