@@ -18,7 +18,7 @@ public class MessageDAO {
     @Autowired
     private JdbcTemplate jdbcTemplate;
 
-    public List<Message> getMessages(long senderId, Donator receiver) {
+    public List<Message> getMessages(long senderId, Donator receiver) throws Exception {
         String selectReceiver = "SELECT * FROM DONATOR WHERE EMAIL = ?";
         String messageQuery = "SELECT * FROM MESSAGE " +
                 "WHERE (ID_SENDER = ? AND ID_RECIPIENT = ?) " +
@@ -35,7 +35,7 @@ public class MessageDAO {
             preparedStatement1.setString(1, receiver.getEmail());
             ResultSet rs1 = preparedStatement1.executeQuery();
 
-            while (rs1.next()) {
+            if (rs1.next()) {
                 long receiverId = rs1.getLong("ID_DONATOR");
 
                 preparedStatement2 = connection.prepareStatement(messageQuery, Statement.RETURN_GENERATED_KEYS);
@@ -58,11 +58,14 @@ public class MessageDAO {
                     messageList.add(message);
                 }
                 rs2.close();
+            } else {
+                rs1.close();
+                preparedStatement1.close();
+
+                throw new Exception("Usuário inexistente.");
             }
             rs1.close();
             preparedStatement1.close();
-        } catch (SQLException e) {
-            e.printStackTrace();
         }
         return messageList;
     }
