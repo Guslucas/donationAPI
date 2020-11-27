@@ -15,6 +15,16 @@ public class CampaignController {
     @Autowired
     CampaignDAO dao;
 
+    @GetMapping("/campaignTeste")
+    public Response getCampaignTeste(){
+        try {
+            return new Response(dao.getCampaignsTeste());
+        }catch (Exception ex){
+            ex.printStackTrace();
+            return new Response(ex.getMessage());
+        }
+    }
+
     @GetMapping("/campaign")
     public Response getCampaigns(){
         try {

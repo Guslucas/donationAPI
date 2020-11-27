@@ -7,6 +7,7 @@ public class Message {
     private long id;
     private String content;
     private Date date;
+    private long senderId;
     private Donator sender;
     private Donator receiver;
 
@@ -17,6 +18,14 @@ public class Message {
         this.sender = sender;
         this.receiver = receiver;
     }
+
+    public Message(long id, String content, Date date, long sender) {
+        this.id = id;
+        this.content = content;
+        this.date = date;
+        this.senderId = sender;
+    }
+
     public Message(){}
 
     public long getId() {
@@ -31,6 +40,9 @@ public class Message {
     public Donator getSender() {
         return sender;
     }
+    public long getSenderId() {
+        return senderId;
+    }
     public Donator getReceiver() {
         return receiver;
     }
@@ -43,6 +55,9 @@ public class Message {
     }
     public void setDate(Date date) {
         this.date = date;
+    }
+    public void setSenderId(long sender) {
+        this.senderId = senderId;
     }
     public void setSender(Donator sender) {
         this.sender = sender;

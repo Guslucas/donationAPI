@@ -18,6 +18,66 @@ public class MessageDAO {
     @Autowired
     private JdbcTemplate jdbcTemplate;
 
+    public List<Message> getSenderMessages(long senderId) throws Exception {
+        String messageQuery = "SELECT * FROM MESSAGE " +
+                "WHERE (ID_SENDER = ?) " +
+                "ORDER BY DATE";
+
+        List<Message> messageList = new ArrayList<>();
+
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+
+        try (Connection con = jdbcTemplate.getDataSource().getConnection()) {
+            ps = con.prepareStatement(messageQuery);
+            ps.setLong(1, senderId);
+
+            rs = ps.executeQuery();
+
+            while (rs.next()) {
+                long messageId = rs.getLong("ID_MESSAGE");
+                java.sql.Date messageDate = rs.getDate("DATE");
+                String content = rs.getString("CONTENT");
+
+                Message m = new Message(messageId, content, messageDate, senderId);
+                messageList.add(m);
+            }
+            rs.close();
+            ps.close();
+        }
+        return messageList;
+    }
+
+    public List<Message> getReceiverMessages(long senderId) throws Exception {
+        String messageQuery = "SELECT * FROM MESSAGE " +
+                "WHERE (ID_SENDER = ?) " +
+                "ORDER BY DATE";
+
+        List<Message> messageList = new ArrayList<>();
+
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+
+        try (Connection con = jdbcTemplate.getDataSource().getConnection()) {
+            ps = con.prepareStatement(messageQuery);
+            ps.setLong(1, senderId);
+
+            rs = ps.executeQuery();
+
+            while (rs.next()) {
+                long messageId = rs.getLong("ID_MESSAGE");
+                java.sql.Date messageDate = rs.getDate("DATE");
+                String content = rs.getString("CONTENT");
+
+                Message m = new Message(messageId, content, messageDate, senderId);
+                messageList.add(m);
+            }
+            rs.close();
+            ps.close();
+        }
+        return messageList;
+    }
+
     public List<Message> getMessages(long senderId, Donator receiver) throws Exception {
         String selectReceiver = "SELECT * FROM DONATOR WHERE EMAIL = ?";
         String messageQuery = "SELECT * FROM MESSAGE " +
@@ -68,6 +128,39 @@ public class MessageDAO {
             preparedStatement1.close();
         }
         return messageList;
+    }
+
+    public Message sendMessageTeste(String messageContent, long senderId, long receiverId) throws Exception {
+        String insertMessage = "INSERT INTO MESSAGE (ID_SENDER, ID_RECIPIENT, DATE, CONTENT)" +
+                "VALUES (?, ?, ?, ?)";
+
+        PreparedStatement preparedStatement1 = null;
+
+        try (Connection connection = jdbcTemplate.getDataSource().getConnection()) {
+
+            preparedStatement1 = connection.prepareStatement(insertMessage, Statement.RETURN_GENERATED_KEYS);
+            preparedStatement1.setLong(1, senderId);
+            preparedStatement1.setLong(2, receiverId);
+            preparedStatement1.setTimestamp(3, new Timestamp(System.currentTimeMillis()));
+            preparedStatement1.setString(4, messageContent);
+
+            int result = preparedStatement1.executeUpdate();
+            if (result == 1) {
+                ResultSet generatedKeys = preparedStatement1.getGeneratedKeys();
+                generatedKeys.next();
+                long messageId = generatedKeys.getLong(1);
+                //message.setId(messageId);
+                generatedKeys.close();
+            }
+
+            preparedStatement1.close();
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        Message message = new Message();
+
+        return message;
     }
 
     public Message sendMessage(Message message, long senderId) throws Exception {

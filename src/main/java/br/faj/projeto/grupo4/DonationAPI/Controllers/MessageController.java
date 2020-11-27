@@ -14,7 +14,27 @@ public class MessageController {
     @Autowired
     MessageDAO dao;
 
-    @PostMapping("/donator/{id}/message")
+    @GetMapping("/donator/{senderId}/senderMessage")
+    public Response getSenderMessages(@PathVariable("senderId") long senderId){
+        try {
+            return new Response(dao.getSenderMessages(senderId));
+        } catch (Exception ex){
+            ex.printStackTrace();
+            return new Response(ex.getMessage());
+        }
+    }
+
+    @GetMapping("/donator/{receiverId}/receiverMessage")
+    public Response getReceiverMessages(@PathVariable("receiverId") long receiverId){
+        try {
+            return new Response(dao.getReceiverMessages(receiverId));
+        } catch (Exception ex){
+            ex.printStackTrace();
+            return new Response(ex.getMessage());
+        }
+    }
+
+    /*@PostMapping("/donator/{id}/message")
     public Response getMessages(@PathVariable("id") long senderId, @RequestBody Donator receiver){
        try {
            return new Response(dao.getMessages(senderId, receiver));
@@ -22,13 +42,12 @@ public class MessageController {
            ex.printStackTrace();
            return new Response(ex.getMessage());
        }
-    }
+    }*/
 
-    @PostMapping("/donator/{id}/message/new")
-    public Response sendMessage(@PathVariable ("id") long senderId, @RequestBody Message message){
+    @PostMapping("/donator/{senderId}/{receiverId}/message/new")
+    public Response sendMessage(@PathVariable ("senderId") long senderId, @PathVariable ("receiverId") long receiverId, @RequestParam (required = true) String message){
         try {
-            System.out.println(message);
-            return new Response(dao.sendMessage(message, senderId));
+            return new Response(dao.sendMessageTeste(message, senderId, receiverId));
         }catch (Exception ex){
             ex.printStackTrace();
             return new Response(ex.getMessage());

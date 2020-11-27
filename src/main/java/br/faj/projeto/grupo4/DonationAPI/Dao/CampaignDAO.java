@@ -71,6 +71,39 @@ public class CampaignDAO {
         throw new Exception("Erro");
     }
 
+    public List<Campaign> getCampaignsTeste() throws Exception{
+        String query = "SELECT * FROM CAMPAIGN";
+
+        List<Campaign> campaignList = new ArrayList<>();
+
+        try (Connection con = jdbcTemplate.getDataSource().getConnection()) {
+            PreparedStatement ps = con.prepareStatement(query);
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                long id = rs.getLong("ID_CAMPAIGN");
+                String name = rs.getString("NAME");
+                String description = rs.getString("DESCRIPTION");
+                Date startDate = rs.getDate("START");
+                Date endDate = rs.getDate("END");
+                String type = rs.getString("TYPE");
+                float cGoal = rs.getLong("MONETARY_GOAL");
+
+                if (type.equals("M")) {
+                    MoneyCampaign mc = new MoneyCampaign(id, name, description, startDate, endDate, cGoal);
+                    campaignList.add(mc);
+                } else if (type.equals("P")) {
+                    ProductCampaign pc = new ProductCampaign(id, name, description, startDate, endDate, cGoal);
+                    campaignList.add(pc);
+                }
+            }
+
+            rs.close();
+            ps.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return campaignList;
+    }
     public List<Campaign> getCampaigns() throws Exception {
         String query = "SELECT * FROM (\n"+
                 "SELECT\n" +
