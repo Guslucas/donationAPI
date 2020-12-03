@@ -31,6 +31,9 @@ public abstract class Donator {
     }
     public Donator() { }
 
+    public Donator(long id, String email) {
+    }
+
     public long getId() {
         return id;
     }
@@ -49,6 +52,9 @@ public abstract class Donator {
 
     public void setId(long id) {
         this.id = id;
+    }
+    public void setEmail(String email) {
+        this.email = email;
     }
 
     public List<Address> generateAddress(){

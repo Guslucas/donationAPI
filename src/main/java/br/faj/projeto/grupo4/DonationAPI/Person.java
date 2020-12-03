@@ -16,6 +16,13 @@ public class Person extends Donator {
         this.surname = surname;
         this.birthDate = birthDate;
     }
+
+    public Person(long id, String email, String name, String surname) {
+        super(id, email);
+        this.name = name;
+        this.surname = surname;
+    }
+
     public Person(long id){
         super(id);
     }
@@ -36,4 +43,13 @@ public class Person extends Donator {
         return birthDate;
     }
 
+    public void setCpf(String cpf) {
+        this.cpf = cpf;
+    }
+    public void setName(String name) {
+        this.name = name;
+    }
+    public void setSurname(String surname) {
+        this.surname = surname;
+    }
 }

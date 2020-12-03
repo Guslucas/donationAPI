@@ -17,6 +17,11 @@ public class Company extends Donator {
         this.foundationDate = foundationDate;
     }
 
+    public Company() { }
+
+    public Company(long donatorId, String receiverEmail, String donatorTradingName) {
+    }
+
     public String getCnpj() {
         return cnpj;
     }
