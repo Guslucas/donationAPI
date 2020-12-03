@@ -8,6 +8,7 @@ import br.faj.projeto.grupo4.DonationAPI.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.sql.Timestamp;
 import java.util.concurrent.ExecutionException;
 
 @RestController
@@ -26,9 +27,22 @@ public class MessageController {
     }
 
     @PostMapping("/donator/{senderId}/{receiverId}/message/new")
-    public Response sendMessage(@PathVariable ("senderId") long senderId, @PathVariable ("receiverId") long receiverId, @RequestBody (required = true) Message message){
+    public Response sendMessage(@PathVariable ("senderId") long senderId, @PathVariable ("receiverId") long receiverId, @RequestParam (required = false) Message message){
         try {
+            System.out.println();
             return new Response(dao.sendMessage(message, senderId));
+        }catch (Exception ex){
+            ex.printStackTrace();
+            return new Response(ex.getMessage());
+        }
+    }
+
+    @PostMapping("/donator/{senderId}/{receiverId}/newMessage/web")
+    public Response sendMessage(@PathVariable ("senderId") long senderId, @PathVariable ("receiverId") long receiverId, @RequestParam (value = "content") String content){
+        try {
+            Timestamp date = new Timestamp(System.currentTimeMillis());
+            Message message = new Message(content, date, senderId, receiverId);
+            return new Response(dao.sendMessageWeb(message));
         }catch (Exception ex){
             ex.printStackTrace();
             return new Response(ex.getMessage());

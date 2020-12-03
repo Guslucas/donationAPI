@@ -185,4 +185,35 @@ public class MessageDAO {
         }
         return receiver;
     }
+
+    public Message sendMessageWeb(Message message) throws Exception {
+        String insertMessage = "INSERT INTO MESSAGE (ID_SENDER, ID_RECIPIENT, DATE, CONTENT)" +
+                "VALUES (?, ?, ?, ?)";
+
+        PreparedStatement preparedStatement1 = null;
+
+        try (Connection connection = jdbcTemplate.getDataSource().getConnection()) {
+
+                preparedStatement1 = connection.prepareStatement(insertMessage, Statement.RETURN_GENERATED_KEYS);
+                preparedStatement1.setLong(1, message.getSenderId());
+                preparedStatement1.setLong(2, message.getReceiverId());
+                preparedStatement1.setTimestamp(3, new Timestamp(message.getDate().getTime()));
+                preparedStatement1.setString(4, message.getContent());
+
+                int result = preparedStatement1.executeUpdate();
+                if (result == 1) {
+                    ResultSet generatedKeys = preparedStatement1.getGeneratedKeys();
+                    generatedKeys.next();
+                    long messageId = generatedKeys.getLong(1);
+                    message.setId(messageId);
+                    generatedKeys.close();
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+            preparedStatement1.close();
+
+        return message;
+    }
+
 }
